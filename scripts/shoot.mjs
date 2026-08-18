@@ -50,7 +50,16 @@ async function settle(page) {
   await page.waitForTimeout(500);
 }
 
+/** Optional page filter, e.g. `shoot.mjs current index` during a phased port. */
+const only = process.argv[3];
+const selected = only ? PAGES.filter((p) => p.name === only) : PAGES;
+
 async function shoot(mode) {
+  if (!selected.length) {
+    console.error(`no page named "${only}"`);
+    process.exit(1);
+  }
+
   const outDir = path.join(SHOTS, mode);
   await mkdir(outDir, { recursive: true });
 
@@ -65,7 +74,7 @@ async function shoot(mode) {
     });
     const page = await context.newPage();
 
-    for (const p of PAGES) {
+    for (const p of selected) {
       const url =
         mode === 'baseline'
           ? pathToFileURL(path.join(ROOT, 'legacy', p.legacy)).href
@@ -112,7 +121,9 @@ async function compare() {
   }
   await mkdir(diffDir, { recursive: true });
 
-  const files = (await readdir(baseDir)).filter((f) => f.endsWith('.png'));
+  const files = (await readdir(baseDir))
+    .filter((f) => f.endsWith('.png'))
+    .filter((f) => !only || f.startsWith(`${only}--`));
   const rows = [];
   let worst = 0;
 
