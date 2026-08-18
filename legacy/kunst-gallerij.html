@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bibliotheek — NIBF</title>
+<title>Kunst gallerij — NIBF</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Work+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
@@ -14,7 +14,6 @@
   a { color: var(--nibf-blue); text-decoration: none; }
   a:hover { color: var(--nibf-accent); }
   a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--nibf-blue); outline-offset: 3px; }
-  [data-lib-row]:hover { background: rgba(28,47,143,.035); }
   @media (max-width: 1024px) {
     [data-shell] { flex-direction: column-reverse !important; }
     [data-nav-mount] { position:fixed !important; top:0; left:0; right:0; width:auto !important; flex:none !important; height:auto !important; z-index:60; background:#fff; }
@@ -25,6 +24,7 @@
     [data-rail-foot] { display:none !important; }
     [data-main] { padding-top:74px !important; }
     [data-hero-grid], [data-gallery-grid], [data-two-col], [data-terms-grid] { grid-template-columns:1fr !important; }
+    [data-gallery-grid] a { grid-column:span 1 !important; }
     [data-h1] { font-size: 54px !important; }
     [data-lib-row] { grid-template-columns:1fr !important; gap:6px !important; }
   }
@@ -37,66 +37,59 @@
 
       <div style="display:flex; align-items:center; gap:14px; margin-bottom:26px;">
         <span style="width:30px; height:1px; background:var(--nibf-accent); display:block;"></span>
-        <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--nibf-accent);">03 — Bibliotheek</span>
+        <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--nibf-accent);">04 — Kunst gallerij</span>
       </div>
-      <h1 data-h1="" style="font-family:'EB Garamond', Georgia, serif; font-weight:500; font-size:clamp(44px,5.4vw,76px); line-height:1.03; letter-spacing:-.015em; color:var(--nibf-blue); margin:0 0 22px;">Geschreven werk</h1>
-      <p style="font-size:17px; line-height:1.85; color:#4A4F60; max-width:56ch; margin:0 0 48px;">Novellen, essays, poëzie en korte verhalen. Losse teksten verschijnen soms eerst in tijdschriften en worden later gebundeld.</p>
-      <div style="border-top:1px solid rgba(28,47,143,.16);">
-
-        <a href="bibliotheek.html" data-lib-row="" style="display:grid; grid-template-columns:70px 1fr 160px 90px; gap:24px; align-items:baseline; padding:26px 4px; border-bottom:1px solid rgba(28,47,143,.16); color:inherit;">
-          <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:#9AA0B4;">2025</span>
-          <span style="font-family:'EB Garamond', Georgia, serif; font-size:26px; color:var(--nibf-blue);">De tweede lezing</span>
-          <span style="font-size:14px; color:#6C7288;">Novelle</span>
-          <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--nibf-accent);">Lezen →</span>
-        </a>
-
-        <a href="bibliotheek.html" data-lib-row="" style="display:grid; grid-template-columns:70px 1fr 160px 90px; gap:24px; align-items:baseline; padding:26px 4px; border-bottom:1px solid rgba(28,47,143,.16); color:inherit;">
-          <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:#9AA0B4;">2024</span>
-          <span style="font-family:'EB Garamond', Georgia, serif; font-size:26px; color:var(--nibf-blue);">Wat de kamer onthield</span>
-          <span style="font-size:14px; color:#6C7288;">Essaybundel</span>
-          <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--nibf-accent);">Lezen →</span>
-        </a>
-
-        <a href="bibliotheek.html" data-lib-row="" style="display:grid; grid-template-columns:70px 1fr 160px 90px; gap:24px; align-items:baseline; padding:26px 4px; border-bottom:1px solid rgba(28,47,143,.16); color:inherit;">
-          <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:#9AA0B4;">2023</span>
-          <span style="font-family:'EB Garamond', Georgia, serif; font-size:26px; color:var(--nibf-blue);">Zeven brieven aan niemand</span>
-          <span style="font-size:14px; color:#6C7288;">Poëzie</span>
-          <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--nibf-accent);">Lezen →</span>
-        </a>
-
-        <a href="bibliotheek.html" data-lib-row="" style="display:grid; grid-template-columns:70px 1fr 160px 90px; gap:24px; align-items:baseline; padding:26px 4px; border-bottom:1px solid rgba(28,47,143,.16); color:inherit;">
-          <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:#9AA0B4;">2021</span>
-          <span style="font-family:'EB Garamond', Georgia, serif; font-size:26px; color:var(--nibf-blue);">Grondtoon</span>
-          <span style="font-size:14px; color:#6C7288;">Korte verhalen</span>
-          <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--nibf-accent);">Lezen →</span>
-        </a>
-
-        <a href="bibliotheek.html" data-lib-row="" style="display:grid; grid-template-columns:70px 1fr 160px 90px; gap:24px; align-items:baseline; padding:26px 4px; border-bottom:1px solid rgba(28,47,143,.16); color:inherit;">
-          <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:#9AA0B4;">2019</span>
-          <span style="font-family:'EB Garamond', Georgia, serif; font-size:26px; color:var(--nibf-blue);">Aanloop</span>
-          <span style="font-size:14px; color:#6C7288;">Korte verhalen</span>
-          <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--nibf-accent);">Lezen →</span>
-        </a>
+      <h1 data-h1="" style="font-family:'EB Garamond', Georgia, serif; font-weight:500; font-size:clamp(44px,5.4vw,76px); line-height:1.03; letter-spacing:-.015em; color:var(--nibf-blue); margin:0 0 22px; max-width:22ch;">Werk per project en thema</h1>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin:0 0 48px;">
+        <span style="padding:9px 16px; border:1px solid var(--nibf-blue); color:var(--nibf-blue); font-size:13px; border-radius:999px;">Alles</span>
+        <span style="padding:9px 16px; border:1px solid rgba(28,47,143,.2); color:#6C7288; font-size:13px; border-radius:999px;">Herinnering</span>
+        <span style="padding:9px 16px; border:1px solid rgba(28,47,143,.2); color:#6C7288; font-size:13px; border-radius:999px;">Papier</span>
+        <span style="padding:9px 16px; border:1px solid rgba(28,47,143,.2); color:#6C7288; font-size:13px; border-radius:999px;">Doek</span>
       </div>
-    </section>
 
-    <section style="padding:88px 7vw; border-top:1px solid rgba(28,47,143,.12); background:#FCFBF8;">
-      <div data-two-col="" style="display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;">
-        <div data-parallax="0.04" style="position:relative; aspect-ratio:3/4; background:repeating-linear-gradient(135deg, rgba(169,129,47,.16) 0 8px, rgba(28,47,143,0) 8px 16px); border:1px solid rgba(28,47,143,.16);">
-          <span style="position:absolute; bottom:14px; left:16px; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.1em; color:#7A8099;">omslag — De tweede lezing</span>
-        </div>
-        <div>
-          <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--nibf-accent);">Meest recent</span>
-          <h2 style="font-family:'EB Garamond', Georgia, serif; font-weight:500; font-size:clamp(32px,3.4vw,44px); line-height:1.1; color:var(--nibf-blue); margin:20px 0 18px;">De tweede lezing</h2>
-          <p style="font-size:17px; line-height:1.85; color:#4A4F60; max-width:46ch; margin:0 0 24px;">Een novelle over een vrouw die haar eigen dagboek herleest en er iemand anders in aantreft. Verschenen in 2025, 118 pagina's.</p>
-          <a href="contact.html" style="font-size:16px;">Leesexemplaar aanvragen →</a>
-        </div>
+      <div data-gallery-grid="" style="display:grid; grid-template-columns:repeat(3,1fr); gap:28px;">
+        <a href="kunst-gallerij.html" data-tilt="" style="grid-column:span 2; display:block; color:inherit; transition:transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s; will-change:transform;">
+          <div data-parallax="0.04" style="position:relative; aspect-ratio:16/10; background:repeating-linear-gradient(135deg, rgba(28,47,143,.11) 0 8px, rgba(28,47,143,0) 8px 16px); border:1px solid rgba(28,47,143,.16);">
+            <span style="position:absolute; bottom:14px; left:16px; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.1em; color:#7A8099;">serie — 6 doeken, 120×90 cm</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; gap:16px; margin-top:16px;">
+            <span style="font-family:'EB Garamond', Georgia, serif; font-size:27px; color:var(--nibf-blue);">Herhaling I–VI</span>
+            <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:#9AA0B4;">2025 · doek</span>
+          </div>
+        </a>
+        <a href="kunst-gallerij.html" data-tilt="" style="display:block; color:inherit; transition:transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s; will-change:transform;">
+          <div data-parallax="0.07" style="position:relative; aspect-ratio:3/4; background:repeating-linear-gradient(135deg, rgba(169,129,47,.16) 0 8px, rgba(28,47,143,0) 8px 16px); border:1px solid rgba(28,47,143,.16);">
+            <span style="position:absolute; bottom:14px; left:16px; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.1em; color:#7A8099;">werk op papier</span>
+          </div>
+          <div style="margin-top:16px;">
+            <div style="font-family:'EB Garamond', Georgia, serif; font-size:27px; color:var(--nibf-blue);">Kamerstudie</div>
+            <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:#9AA0B4; margin-top:4px;">2024 · papier</div>
+          </div>
+        </a>
+        <a href="kunst-gallerij.html" data-tilt="" style="display:block; color:inherit; transition:transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s; will-change:transform;">
+          <div data-parallax="0.05" style="position:relative; aspect-ratio:1/1; background:repeating-linear-gradient(135deg, rgba(28,47,143,.09) 0 8px, rgba(28,47,143,0) 8px 16px); border:1px solid rgba(28,47,143,.16);">
+            <span style="position:absolute; bottom:14px; left:16px; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.1em; color:#7A8099;">installatie, detail</span>
+          </div>
+          <div style="margin-top:16px;">
+            <div style="font-family:'EB Garamond', Georgia, serif; font-size:27px; color:var(--nibf-blue);">Grondtoon</div>
+            <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:#9AA0B4; margin-top:4px;">2023 · installatie</div>
+          </div>
+        </a>
+        <a href="kunst-gallerij.html" data-tilt="" style="grid-column:span 2; display:block; color:inherit; transition:transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s; will-change:transform;">
+          <div data-parallax="0.03" style="position:relative; aspect-ratio:16/9; background:repeating-linear-gradient(135deg, rgba(28,47,143,.13) 0 8px, rgba(28,47,143,0) 8px 16px); border:1px solid rgba(28,47,143,.16);">
+            <span style="position:absolute; bottom:14px; left:16px; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.1em; color:#7A8099;">tentoonstellingsoverzicht</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; gap:16px; margin-top:16px;">
+            <span style="font-family:'EB Garamond', Georgia, serif; font-size:27px; color:var(--nibf-blue);">Wat de kamer onthield</span>
+            <span style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:#9AA0B4;">2024 · expositie</span>
+          </div>
+        </a>
       </div>
     </section>
 
     <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px; padding:44px 7vw 56px; border-top:1px solid rgba(28,47,143,.12);">
       <span style="font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.1em; color:#9AA0B4;">© 2026 Nisrine Bolakhrif — NIBF. Alle rechten voorbehouden.</span>
-      <a href="kunst-gallerij.html" style="display:inline-flex; align-items:baseline; gap:12px; font-family:'EB Garamond', Georgia, serif; font-size:24px; color:var(--nibf-blue);"><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.14em; color:#9AA0B4;">VOLGENDE</span>Kunst gallerij →</a>
+      <a href="contact.html" style="display:inline-flex; align-items:baseline; gap:12px; font-family:'EB Garamond', Georgia, serif; font-size:24px; color:var(--nibf-blue);"><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.14em; color:#9AA0B4;">VOLGENDE</span>Contact →</a>
     </div>
   </main>
   <div data-nav-mount="" style="width:var(--nibf-nav); min-width:210px; flex:0 0 auto; position:sticky; top:0; height:100vh;">
@@ -115,8 +108,8 @@
         <li><a href="index.html" data-nav-item="home" style="display:flex; align-items:baseline; gap:12px; padding:10px 0; font-size:18px; color:#6C7288; border-bottom:1px solid rgba(28,47,143,.08);"><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#B7BCCB;">00</span>Home</a></li>
         <li><a href="over-mij.html" data-nav-item="over-mij" style="display:flex; align-items:baseline; gap:12px; padding:10px 0; font-size:18px; color:#6C7288; border-bottom:1px solid rgba(28,47,143,.08);"><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#B7BCCB;">01</span>Over mij</a></li>
         <li><a href="auteursrechten.html" data-nav-item="auteursrechten" style="display:flex; align-items:baseline; gap:12px; padding:10px 0; font-size:18px; color:#6C7288; border-bottom:1px solid rgba(28,47,143,.08);"><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#B7BCCB;">02</span>Auteursrechten</a></li>
-        <li><a href="bibliotheek.html" data-nav-item="bibliotheek" aria-current="page" style="display:flex; align-items:baseline; gap:12px; padding:10px 0; font-size:18px; color:#1C2F8F; font-weight:500; border-bottom:1px solid var(--nibf-accent);"><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#B7BCCB;">03</span>Bibliotheek</a></li>
-        <li><a href="kunst-gallerij.html" data-nav-item="gallerij" style="display:flex; align-items:baseline; gap:12px; padding:10px 0; font-size:18px; color:#6C7288; border-bottom:1px solid rgba(28,47,143,.08);"><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#B7BCCB;">04</span>Kunst gallerij</a></li>
+        <li><a href="bibliotheek.html" data-nav-item="bibliotheek" style="display:flex; align-items:baseline; gap:12px; padding:10px 0; font-size:18px; color:#6C7288; border-bottom:1px solid rgba(28,47,143,.08);"><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#B7BCCB;">03</span>Bibliotheek</a></li>
+        <li><a href="kunst-gallerij.html" data-nav-item="gallerij" aria-current="page" style="display:flex; align-items:baseline; gap:12px; padding:10px 0; font-size:18px; color:#1C2F8F; font-weight:500; border-bottom:1px solid var(--nibf-accent);"><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#B7BCCB;">04</span>Kunst gallerij</a></li>
         <li><a href="contact.html" data-nav-item="contact" style="display:flex; align-items:baseline; gap:12px; padding:10px 0; font-size:18px; color:#6C7288; border-bottom:1px solid rgba(28,47,143,.08);"><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#B7BCCB;">05</span>Contact</a></li>
       </ul>
       <div data-rail-foot="" style="display:flex; flex-direction:column; gap:12px;">
@@ -124,7 +117,7 @@
           <a href="contact.html">Instagram</a>
           <a href="contact.html">LinkedIn</a>
         </div>
-        <a href="mailto:studio@nibf.nl" style="font-size:14px; color:#6C7288;">studio@nibf.nl</a>
+        <a href="mailto:neb_off@hotmail.com" style="font-size:14px; color:#6C7288;">neb_off@hotmail.com</a>
         <span style="font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:.12em; color:#B7BCCB;">BOIP-GEREGISTREERD MERK</span>
       </div>
     </nav>
@@ -141,6 +134,21 @@
       var open = rail.hasAttribute('data-nav-open');
       if (open) rail.removeAttribute('data-nav-open'); else rail.setAttribute('data-nav-open', '');
       burger.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  }
+  if (motion) {
+    document.querySelectorAll('[data-tilt]').forEach(function(card) {
+      card.addEventListener('mousemove', function(e) {
+        var r = card.getBoundingClientRect();
+        var nx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+        var ny = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+        card.style.transform = 'perspective(1200px) rotateY(' + (nx * 3.2).toFixed(2) + 'deg) rotateX(' + (-ny * 3.2).toFixed(2) + 'deg) translateZ(14px)';
+        card.style.boxShadow = '0 22px 50px -28px rgba(28,47,143,.35)';
+      });
+      card.addEventListener('mouseleave', function() {
+        card.style.transform = 'perspective(1200px) rotateY(0deg) rotateX(0deg) translateZ(0)';
+        card.style.boxShadow = 'none';
+      });
     });
   }
   var parallaxEls = Array.from(document.querySelectorAll('[data-parallax]'));
