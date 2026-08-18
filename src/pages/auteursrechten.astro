@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+
+const feiten = [
+  {
+    label: 'Merkregistratie',
+    waarde: 'BOIP — Benelux',
+    note: 'Woord- en beeldmerk NIBF, klassen 16 en 41. Depotnummer volgt bij publicatie.',
+  },
+  {
+    label: 'Auteursrecht',
+    waarde: 'Van rechtswege',
+    note: 'Teksten en beeldend werk zijn beschermd vanaf het moment van creatie. Registratie is geen voorwaarde.',
+  },
+  {
+    label: 'Licenties',
+    waarde: 'Op aanvraag',
+    note: 'Gebruik in publicaties, tentoonstellingen of onderwijs kan worden gelicentieerd via een schriftelijke overeenkomst.',
+  },
+];
+
+const wel = [
+  'Delen van een pagina via een link naar deze site.',
+  'Kort citeren met bronvermelding, volgens het citaatrecht.',
+  'Persgebruik van aangeleverd beeldmateriaal met credit.',
+];
+
+const niet = [
+  'Reproductie of verkoop van werk zonder licentie.',
+  'Bewerken, natekenen of hergebruiken als basis voor nieuw werk.',
+  'Gebruik van teksten of beelden als trainingsdata voor AI-modellen.',
+];
+---
+
+<BaseLayout
+  title="Auteursrechten — NIBF"
+  path="/auteursrechten"
+  description="NIBF is een bij het BOIP geregistreerd merk. Wat is vastgelegd, en wat wel en niet mag zonder toestemming."
+>
+  <section class="section--page">
+    <Eyebrow text="02 — Auteursrechten & merk" />
+    <h1 class="h1 h1--page">NIBF is een geregistreerd merk</h1>
+    <p class="page-intro">
+      Al het werk op deze site — teksten, beelden, titels, het woordmerk NIBF en de vormgeving
+      ervan — is intellectueel eigendom van Nisrine Bolakhrif. Hieronder staat wat is vastgelegd,
+      en wat wel en niet mag zonder toestemming.
+    </p>
+
+    <div class="factgrid">
+      {
+        feiten.map((f) => (
+          <div class="fact">
+            <div class="fact__label">{f.label}</div>
+            <div class="fact__value">{f.waarde}</div>
+            <div class="fact__note">{f.note}</div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div data-terms-grid>
+      <div>
+        <h2 class="terms__h">Wel toegestaan</h2>
+        <ul class="terms">
+          {wel.map((t) => <li><span class="terms__yes">+</span> {t}</li>)}
+        </ul>
+      </div>
+      <div>
+        <h2 class="terms__h">Niet toegestaan</h2>
+        <ul class="terms">
+          {niet.map((t) => <li><span class="terms__no">–</span> {t}</li>)}
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      {/* The {' '} is load-bearing: Astro strips the newline before an inline
+          element that starts a line, which would render "viacontact". */}
+      <p>
+        Vragen over gebruik of een licentieverzoek? Stuur een bericht via{' '}
+        <a href="/contact">contact</a> met een korte beschrijving van het beoogde gebruik, de
+        oplage en de periode.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  h1 {
+    max-width: 20ch;
+    margin-bottom: 24px;
+  }
+
+  .page-intro {
+    max-width: 62ch;
+    margin: 0 0 52px;
+  }
+
+  [data-terms-grid] {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+  }
+</style>

@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+
+const tijdlijn = [
+  {
+    jaar: '2025',
+    html: 'Serie <em>Herhaling I–VI</em> voltooid; novelle <em>De tweede lezing</em> gepubliceerd.',
+  },
+  { jaar: '2024', html: 'Solotentoonstelling <em>Wat de kamer onthield</em>, Amsterdam.' },
+  { jaar: '2022', html: 'Start van de merkregistratie NIBF bij het BOIP.' },
+  { jaar: '2019', html: 'Eerste publicatie en eerste atelier.' },
+];
+---
+
+<BaseLayout
+  title="Over mij — NIBF"
+  path="/over-mij"
+  description="Nisrine Bolakhrif werkt in twee talen: beeld en tekst. Over haar werkwijze, series en samenwerkingen."
+>
+  <section class="section--page">
+    <Eyebrow text="01 — Over mij" />
+    <h1 class="h1 h1--page">Ik werk in twee talen: beeld en tekst</h1>
+
+    <div data-two-col class="two-col--start">
+      <div>
+        <p class="lede lede--sm">
+          Wat begint als een aantekening in een schrift eindigt soms op doek; wat begint als een
+          tekening wordt soms een verhaal.
+        </p>
+        <p class="prose">
+          Ik ben Nisrine Bolakhrif, maker van beeldend werk en van teksten. Die heen-en-weer
+          beweging tussen beeld en taal is mijn werkwijze, niet mijn twijfel.
+        </p>
+        <p class="prose">
+          Mijn werk gaat over herinnering, herhaling en de kleine verschuivingen die ontstaan
+          wanneer iets opnieuw wordt verteld. Ik werk in series, meestal langzaam, en publiceer
+          wanneer een reeks af is.
+        </p>
+        <p class="prose">
+          Naast het maken geef ik lezingen en workshops, en werk ik samen met uitgevers, galeries
+          en scholen. Voor aanvragen kun je terecht op de <a href="/contact">contactpagina</a>.
+        </p>
+      </div>
+
+      <div data-parallax="0.05" class="stack">
+        <div class="placeholder placeholder--4x5 placeholder--s10">
+          <span class="placeholder__caption placeholder__caption--tight">portret — atelier</span>
+        </div>
+        <div class="stat-row">
+          <div class="stat">
+            <div class="stat__num">14</div>
+            <div class="stat__label">gepubliceerde teksten</div>
+          </div>
+          <div class="stat">
+            <div class="stat__num">6</div>
+            <div class="stat__label">beeldende series</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--88 section--rule section--panel">
+    <Eyebrow text="Tijdlijn" rule={false} />
+    <div class="tl">
+      {
+        tijdlijn.map((r) => (
+          <div data-lib-row class="tl__row">
+            <span class="tl__year">{r.jaar}</span>
+            <span class="tl__text" set:html={r.html} />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  h1 {
+    max-width: 22ch;
+    margin-bottom: 28px;
+  }
+
+  /* The original nudged this caption 2px tighter than elsewhere. */
+  .placeholder__caption--tight {
+    bottom: 12px;
+    left: 14px;
+  }
+
+  [data-two-col] {
+    margin-top: 44px;
+  }
+</style>

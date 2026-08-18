@@ -2,11 +2,19 @@
  * Visual regression harness for the Astro migration.
  *
  *   node scripts/shoot.mjs baseline   # shoot legacy/*.html via file://  -> .omc/shots/baseline
- *   node scripts/shoot.mjs current    # shoot the dev server            -> .omc/shots/current
+ *   node scripts/shoot.mjs current    # shoot the built site            -> .omc/shots/current
  *   node scripts/shoot.mjs compare    # diff the two, print a report
+ *   node scripts/shoot.mjs promote    # current becomes the new baseline
  *
  * Phases 1 and 2 of the migration must produce pixel-identical output.
  * This is what proves it.
+ *
+ * `baseline` only works while legacy/ exists. It was deleted once Phase 2
+ * passed, so the baseline is now the verified Phase 2 output, promoted from
+ * current/. Phase 3 changes things deliberately (contrast, breakpoints), and
+ * diffing against that baseline is what shows exactly what moved. To recover
+ * the original hand-written reference, check out a commit before legacy/ was
+ * removed and re-run `baseline`.
  *
  * Determinism note: every page is shot with reducedMotion: 'reduce'. The site
  * honours prefers-reduced-motion, which freezes the three.js hero at its rest
@@ -14,7 +22,7 @@
  * could never diff clean.
  */
 import { chromium } from 'playwright';
-import { mkdir, readdir, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readdir, rm, writeFile } from 'node:fs/promises';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -166,13 +174,28 @@ async function compare() {
   process.exit(worst > 0.1 ? 1 : 0);
 }
 
+async function promote() {
+  const curDir = path.join(SHOTS, 'current');
+  const baseDir = path.join(SHOTS, 'baseline');
+  if (!existsSync(curDir)) {
+    console.error('nothing to promote: run `current` first');
+    process.exit(1);
+  }
+  await rm(baseDir, { recursive: true, force: true });
+  await cp(curDir, baseDir, { recursive: true });
+  await rm(path.join(SHOTS, 'diff'), { recursive: true, force: true });
+  console.log('current -> baseline');
+}
+
 const mode = process.argv[2];
 if (mode === 'baseline' || mode === 'current') {
   console.log(`Shooting ${mode}...`);
   await shoot(mode);
 } else if (mode === 'compare') {
   await compare();
+} else if (mode === 'promote') {
+  await promote();
 } else {
-  console.error('usage: shoot.mjs <baseline|current|compare>');
+  console.error('usage: shoot.mjs <baseline|current|compare|promote>');
   process.exit(1);
 }

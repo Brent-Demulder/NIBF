@@ -32,6 +32,12 @@
   /* surfaces */
   --white: #FFFFFF;
   --panel: #FCFBF8;
+  --row-hover: rgba(28, 47, 143, .035);
+
+  /* one-off inks from the inner pages */
+  --label-soft: #8A90A6;
+  --card-body: #5A6076;
+  --danger: #B23A3A;
 
   /* hairlines, all derived from --blue at low alpha */
   --rule-faint: rgba(28, 47, 143, .08);
@@ -262,17 +268,31 @@ select:focus-visible {
 /* Striped stand-in shown wherever real artwork has not been uploaded yet.
    Removing it is a content problem, not a CSS one. */
 .placeholder {
+  --stripe: rgba(28, 47, 143, .11);
   position: relative;
   border: 1px solid var(--rule-strong);
   background: repeating-linear-gradient(
     135deg,
-    rgba(28, 47, 143, .11) 0 8px,
+    var(--stripe) 0 8px,
     rgba(28, 47, 143, 0) 8px 16px
   );
-  transition: transform .5s var(--ease), box-shadow .5s;
 }
 
+/* The original used a slightly different stripe alpha per page. */
+.placeholder--s09 { --stripe: rgba(28, 47, 143, .09); }
+.placeholder--s10 { --stripe: rgba(28, 47, 143, .10); }
+.placeholder--s13 { --stripe: rgba(28, 47, 143, .13); }
+.placeholder--gold { --stripe: rgba(169, 129, 47, .16); }
+
 .placeholder--4x3 { aspect-ratio: 4 / 3; }
+.placeholder--4x5 { aspect-ratio: 4 / 5; }
+.placeholder--3x4 { aspect-ratio: 3 / 4; }
+.placeholder--1x1 { aspect-ratio: 1 / 1; }
+.placeholder--16x10 { aspect-ratio: 16 / 10; }
+.placeholder--16x9 { aspect-ratio: 16 / 9; }
+
+/* Applied wherever the element also carries data-tilt. */
+.tiltable { transition: transform .5s var(--ease), box-shadow .5s; }
 
 .placeholder__caption {
   position: absolute;
@@ -449,6 +469,234 @@ select:focus-visible {
   color: var(--fainter);
 }
 
+/* ======================================================== inner pages ==== */
+/* Shared by over-mij, auteursrechten, bibliotheek, kunst-gallerij, contact.
+   Per-page one-offs (max-width, margin-bottom) live in each page's own
+   scoped <style> block rather than accumulating modifiers here. */
+
+.section--page { padding: 80px var(--pad-x) 92px; }
+.section--88 { padding: 88px var(--pad-x); }
+
+/* The five inner pages share one h1 scale, distinct from the homepage. */
+.h1--page {
+  font-size: clamp(44px, 5.4vw, 76px);
+  line-height: 1.03;
+  letter-spacing: -.015em;
+  margin: 0 0 22px;
+}
+
+.page-intro { font-size: 17px; line-height: 1.85; color: var(--muted); }
+
+.two-col--start { gap: 64px; align-items: start; }
+
+/* ------------------------------------------------------------ over-mij --- */
+
+/* Unlike the homepage lede, this one is not measure-limited — it sits in a
+   two-column grid that already constrains it. */
+.lede--sm {
+  font-size: 23px;
+  line-height: 1.55;
+  max-width: none;
+  margin: 0 0 26px;
+}
+
+.prose { font-size: 17px; line-height: 1.85; color: var(--muted); margin: 0 0 20px; }
+.prose:last-child { margin-bottom: 0; }
+
+.stack { display: grid; gap: 18px; }
+.stat-row { display: flex; gap: 18px; }
+.stat { flex: 1; padding: 20px; border: 1px solid var(--rule-strong); }
+
+.stat__num {
+  font-family: var(--font-display);
+  font-size: 38px;
+  color: var(--blue);
+  line-height: 1;
+}
+
+.stat__label { font-size: 13px; color: var(--soft); margin-top: 6px; }
+
+/* timeline */
+.tl { margin-top: 32px; border-top: 1px solid var(--rule-strong); }
+
+.tl__row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 24px;
+  padding: 24px 4px;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.tl__year { font-family: var(--font-mono); font-size: 12px; color: var(--faint); }
+.tl__text { font-size: 17px; line-height: 1.7; color: var(--muted); }
+
+/* --------------------------------------------------------- bibliotheek --- */
+
+.lib { border-top: 1px solid var(--rule-strong); }
+
+.lib__row {
+  display: grid;
+  grid-template-columns: 70px 1fr 160px 90px;
+  gap: 24px;
+  align-items: baseline;
+  padding: 26px 4px;
+  border-bottom: 1px solid var(--rule-strong);
+  color: inherit;
+}
+
+.lib__row:hover { background: var(--row-hover); color: inherit; }
+
+.lib__year { font-family: var(--font-mono); font-size: 12px; color: var(--faint); }
+.lib__title { font-family: var(--font-display); font-size: 26px; color: var(--blue); }
+.lib__kind { font-size: 14px; color: var(--soft); }
+.lib__cta { font-family: var(--font-mono); font-size: 12px; color: var(--gold); }
+
+/* ------------------------------------------------------ auteursrechten --- */
+
+.factgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1px;
+  background: var(--rule-strong);
+  border: 1px solid var(--rule-strong);
+  margin-bottom: 56px;
+}
+
+.fact { background: var(--white); padding: 30px; }
+
+.fact__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--label-soft);
+  margin-bottom: 14px;
+}
+
+.fact__value {
+  font-family: var(--font-display);
+  font-size: 26px;
+  color: var(--blue);
+  line-height: 1.2;
+}
+
+.fact__note {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--card-body);
+  margin-top: 10px;
+}
+
+.terms__h {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 26px;
+  color: var(--blue);
+  margin: 0 0 18px;
+}
+
+.terms { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+
+.terms li {
+  display: flex;
+  gap: 12px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.terms__yes { color: var(--gold); font-family: var(--font-mono); }
+.terms__no { color: var(--danger); font-family: var(--font-mono); }
+
+.callout {
+  margin-top: 52px;
+  padding: 28px 30px;
+  border-left: 2px solid var(--gold);
+  background: var(--panel);
+  max-width: 70ch;
+}
+
+.callout p { margin: 0; font-size: 16px; line-height: 1.8; color: var(--muted); }
+
+/* ------------------------------------------------------ kunst-gallerij --- */
+
+.chips { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 48px; }
+
+/* Non-functional in v1: these are inert <span>s in the original. Phase 3
+   turns them into real <button> filters. */
+.chip {
+  padding: 9px 16px;
+  border: 1px solid rgba(28, 47, 143, .2);
+  color: var(--soft);
+  font-size: 13px;
+  border-radius: 999px;
+}
+
+.chip--active { border-color: var(--blue); color: var(--blue); }
+
+[data-gallery-grid] { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+
+.tile { display: block; color: inherit; will-change: transform; }
+.tile:hover { color: inherit; }
+.tile--wide { grid-column: span 2; }
+
+.tile__meta { display: flex; justify-content: space-between; gap: 16px; margin-top: 16px; }
+.tile__title { font-family: var(--font-display); font-size: 27px; color: var(--blue); }
+.tile__year { font-family: var(--font-mono); font-size: 12px; color: var(--faint); }
+.tile__sub { margin-top: 16px; }
+.tile__kind { font-family: var(--font-mono); font-size: 12px; color: var(--faint); margin-top: 4px; }
+
+/* -------------------------------------------------------------- contact -- */
+
+.field-list { display: grid; gap: 16px; font-size: 16px; }
+
+.field-label {
+  color: var(--label-soft);
+  display: block;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+
+.field-value { color: var(--muted); }
+.socials { display: flex; gap: 18px; }
+
+.form {
+  display: grid;
+  gap: 20px;
+  background: var(--white);
+  padding: 34px;
+  border: 1px solid var(--rule-strong);
+}
+
+.form label { display: grid; gap: 8px; font-size: 14px; color: var(--muted); }
+
+.form input,
+.form select,
+.form textarea {
+  font-family: var(--font-body);
+  font-size: 16px;
+  padding: 13px 14px;
+  border: 1px solid var(--rule-btn);
+  background: var(--white);
+  color: var(--ink);
+  border-radius: var(--radius);
+}
+
+.form textarea { resize: vertical; }
+
+.form button {
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 15px 22px;
+  background: var(--blue);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+[data-form-msg] { display: none; font-size: 14px; color: var(--gold); }
+
 /* --------------------------------------------------------- responsive ---- */
 /* Ported verbatim from the original. The single 1024px cliff means a tablet
    gets the phone layout; Phase 3 adds an intermediate state. Until then this
@@ -501,6 +749,10 @@ select:focus-visible {
   [data-gallery-grid],
   [data-two-col],
   [data-terms-grid] { grid-template-columns: 1fr !important; }
+
+  /* Without this the span-2 gallery tiles stay two columns wide inside a
+     single-column grid. Only kunst-gallerij.html carried this rule. */
+  [data-gallery-grid] a { grid-column: span 1 !important; }
 
   .h1 { font-size: 54px !important; }
 

@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import { site } from '../config/site';
+
+const onderwerpen = [
+  'Licentieverzoek',
+  'Tentoonstelling',
+  'Publicatie',
+  'Lezing of workshop',
+  'Anders',
+];
+---
+
+<BaseLayout
+  title="Contact — NIBF"
+  path="/contact"
+  description="Neem contact op met Nisrine Bolakhrif voor licenties, tentoonstellingen, publicaties, lezingen of workshops."
+>
+  <section class="section--page">
+    <Eyebrow text="05 — Contact" />
+    <h1 class="h1 h1--page">Neem contact op</h1>
+
+    <div data-two-col class="two-col--start">
+      <div>
+        <p class="page-intro">
+          Voor licenties, tentoonstellingen, publicaties, lezingen of workshops. Ik antwoord
+          doorgaans binnen vijf werkdagen.
+        </p>
+        <div class="field-list">
+          <div>
+            <span class="field-label">E-mail</span>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+          </div>
+          <div>
+            <span class="field-label">Atelier</span>
+            <span class="field-value">Amsterdam, op afspraak</span>
+          </div>
+          <div>
+            <span class="field-label">Sociaal</span>
+            <span class="socials">
+              <a href="/contact">Instagram</a>
+              <a href="/contact">LinkedIn</a>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Still the original demo form. Phase 3 wires it to Netlify Forms. */}
+      <form id="contact-form" class="form">
+        <label>
+          Naam
+          <input type="text" name="naam" required />
+        </label>
+        <label>
+          E-mailadres
+          <input type="email" name="email" required />
+        </label>
+        <label>
+          Onderwerp
+          <select name="onderwerp">
+            {onderwerpen.map((o) => <option>{o}</option>)}
+          </select>
+        </label>
+        <label>
+          Bericht
+          <textarea name="bericht" rows="5"></textarea>
+        </label>
+        <button type="submit">Versturen</button>
+        <span data-form-msg>Bedankt — je bericht is verzonden (demo).</span>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-intro {
+    max-width: 44ch;
+    margin: 0 0 34px;
+  }
+
+  [data-two-col] {
+    margin-top: 40px;
+  }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form');
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const msg = form.querySelector<HTMLElement>('[data-form-msg]');
+    if (msg) msg.style.display = 'block';
+  });
+</script>
