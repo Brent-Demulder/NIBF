@@ -12,6 +12,7 @@ const werken = [
     stripe: '',
     parallax: '0.04',
     wide: true,
+    tags: ['Herinnering', 'Doek'],
   },
   {
     titel: 'Kamerstudie',
@@ -21,6 +22,7 @@ const werken = [
     stripe: 'placeholder--gold',
     parallax: '0.07',
     wide: false,
+    tags: ['Papier'],
   },
   {
     titel: 'Grondtoon',
@@ -30,6 +32,7 @@ const werken = [
     stripe: 'placeholder--s09',
     parallax: '0.05',
     wide: false,
+    tags: ['Herinnering'],
   },
   {
     titel: 'Wat de kamer onthield',
@@ -39,9 +42,12 @@ const werken = [
     stripe: 'placeholder--s13',
     parallax: '0.03',
     wide: true,
+    tags: ['Herinnering', 'Doek'],
   },
 ];
 
+// Placeholder tagging: the original markup carried no work-to-filter mapping,
+// so these are plausible assignments that get replaced by real CMS values.
 const filters = ['Alles', 'Herinnering', 'Papier', 'Doek'];
 ---
 
@@ -57,7 +63,14 @@ const filters = ['Alles', 'Herinnering', 'Papier', 'Doek'];
     <div class="chips">
       {
         filters.map((f, i) => (
-          <span class:list={['chip', i === 0 && 'chip--active']}>{f}</span>
+          <button
+            type="button"
+            class:list={['chip', i === 0 && 'chip--active']}
+            data-filter={f}
+            aria-pressed={i === 0 ? 'true' : 'false'}
+          >
+            {f}
+          </button>
         ))
       }
     </div>
@@ -69,6 +82,7 @@ const filters = ['Alles', 'Herinnering', 'Papier', 'Doek'];
             href="/kunst-gallerij"
             data-tilt
             class:list={['tile', 'tiltable', w.wide && 'tile--wide']}
+            data-tags={w.tags.join('|')}
           >
             <div
               data-parallax={w.parallax}
@@ -101,3 +115,28 @@ const filters = ['Alles', 'Herinnering', 'Papier', 'Doek'];
     max-width: 22ch;
   }
 </style>
+
+<script>
+  // The chips were inert <span>s in the original -- they looked interactive
+  // but had no handler and were not keyboard reachable. Now real buttons.
+  const chips = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const tiles = document.querySelectorAll<HTMLElement>('[data-tags]');
+
+  for (const chip of chips) {
+    chip.addEventListener('click', () => {
+      const want = chip.dataset.filter;
+
+      for (const other of chips) {
+        const on = other === chip;
+        other.classList.toggle('chip--active', on);
+        other.setAttribute('aria-pressed', String(on));
+      }
+
+      for (const tile of tiles) {
+        const tags = (tile.dataset.tags ?? '').split('|');
+        const show = want === 'Alles' || tags.includes(want ?? '');
+        tile.hidden = !show;
+      }
+    });
+  }
+</script>
