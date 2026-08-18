@@ -1,0 +1,19 @@
+node_modules/
+dist/
+.astro/
+
+# OMC tooling state. Only plans/ is worth versioning — the rest is runtime
+# state, and the screenshot baseline is regenerable from legacy/ at any commit.
+.omc/*
+!.omc/plans/
+NIBF/
+
+# env / local
+.env
+.env.*
+!.env.example
+*.local
+
+# os
+.DS_Store
+Thumbs.db

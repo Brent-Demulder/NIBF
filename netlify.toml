@@ -1,0 +1,60 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  # Declared ahead of v2. Decap's OAuth endpoints will live here as native
+  # Netlify Functions, deployed independently of Astro so no adapter is needed.
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# The old site served .html URLs. Nothing is known to link to them yet, but
+# these are free insurance against anything that already does.
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/over-mij.html"
+  to = "/over-mij"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/auteursrechten.html"
+  to = "/auteursrechten"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/bibliotheek.html"
+  to = "/bibliotheek"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/kunst-gallerij.html"
+  to = "/kunst-gallerij"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/contact.html"
+  to = "/contact"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+
+# Fonts are self-hosted and fingerprinted by the build.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
