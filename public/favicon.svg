@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="NIBF">
+  <!-- The NIBF roundel: a ring whose top half is filled, with a smaller
+       centre circle whose bottom half is filled. Same construction as the
+       .mark component in global.css and the 3D hero. -->
+  <circle cx="16" cy="16" r="15" fill="#fff" stroke="#1C2F8F" stroke-width="1.5" />
+  <path d="M1 16 A15 15 0 0 1 31 16 Z" fill="#1C2F8F" />
+  <circle cx="16" cy="16" r="7" fill="#fff" />
+  <path d="M9 16 A7 7 0 0 0 23 16 Z" fill="#1C2F8F" />
+</svg>

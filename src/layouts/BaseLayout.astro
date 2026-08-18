@@ -34,6 +34,21 @@ const canonical = new URL(path, Astro.site).href;
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    {/* Sharing any page previously produced a blank card -- only <title>
+        existed. No og:image yet: it wants a 1200x630 raster, and the right
+        one is a piece of her actual work, which does not exist on the site
+        yet. Worth revisiting once the gallery has real images. */}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="nl_BE" />
+    <meta property="og:title" content={title} />
+    <meta property="og:url" content={canonical} />
+    {description && <meta property="og:description" content={description} />}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
   </head>
   <body>
     <div data-shell>
