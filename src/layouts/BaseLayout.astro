@@ -1,0 +1,95 @@
+---
+// Self-hosted rather than loaded from the Google Fonts CDN: same files, but
+// served same-origin (no extra DNS/TLS, no render-blocking stylesheet) and it
+// avoids the EU data-transfer question on a Belgian client site.
+import '@fontsource/eb-garamond/400.css';
+import '@fontsource/eb-garamond/500.css';
+import '@fontsource/eb-garamond/400-italic.css';
+import '@fontsource/work-sans/300.css';
+import '@fontsource/work-sans/400.css';
+import '@fontsource/work-sans/500.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '../styles/global.css';
+
+import NavRail from '../components/NavRail.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { site } from '../config/site';
+
+interface Props {
+  title: string;
+  /** Path of this page, e.g. "/over-mij". Drives nav state and the next link. */
+  path: string;
+  description?: string;
+}
+
+const { title, path, description } = Astro.props;
+const canonical = new URL(path, Astro.site).href;
+---
+
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonical} />
+  </head>
+  <body>
+    <div data-shell>
+      <main data-main>
+        <slot />
+        <SiteFooter current={path} />
+      </main>
+      <NavRail current={path} />
+    </div>
+
+    <script>
+      // Card tilt and scroll parallax. Both are gated on prefers-reduced-motion,
+      // which is also what makes the visual-regression harness deterministic.
+      const motion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (motion) {
+        document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((card) => {
+          card.addEventListener('mousemove', (e) => {
+            const r = card.getBoundingClientRect();
+            const nx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+            const ny = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+            card.style.transform =
+              `perspective(1200px) rotateY(${(nx * 3.2).toFixed(2)}deg) ` +
+              `rotateX(${(-ny * 3.2).toFixed(2)}deg) translateZ(14px)`;
+            card.style.boxShadow = '0 22px 50px -28px rgba(28,47,143,.35)';
+          });
+          card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1200px) rotateY(0deg) rotateX(0deg) translateZ(0)';
+            card.style.boxShadow = 'none';
+          });
+        });
+
+        const parallaxEls = Array.from(
+          document.querySelectorAll<HTMLElement>('[data-parallax]')
+        );
+        if (parallaxEls.length) {
+          let pending = false;
+          const onScroll = () => {
+            if (pending) return;
+            pending = true;
+            requestAnimationFrame(() => {
+              pending = false;
+              const vh = window.innerHeight;
+              for (const el of parallaxEls) {
+                const r = el.getBoundingClientRect();
+                if (r.bottom < -200 || r.top > vh + 200) continue;
+                const f = parseFloat(el.getAttribute('data-parallax') ?? '') || 0.04;
+                const shift = (r.top + r.height / 2 - vh / 2) * -f;
+                el.style.transform = `translate3d(0,${shift.toFixed(1)}px,0)`;
+              }
+            });
+          };
+          window.addEventListener('scroll', onScroll, { passive: true });
+          onScroll();
+        }
+      }
+    </script>
+  </body>
+</html>

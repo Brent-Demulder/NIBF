@@ -1,0 +1,16 @@
+---
+interface Props {
+  href: string;
+  /** The 00-05 index of the target page, echoing the nav numbering. */
+  num: string;
+  title: string;
+}
+
+const { href, num, title } = Astro.props;
+---
+
+<a href={href} data-tilt class="card">
+  <div class="card__num">{num}</div>
+  <h2 class="h2">{title}</h2>
+  <p class="body"><slot /></p>
+</a>

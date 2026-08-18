@@ -1,0 +1,508 @@
+/* ==========================================================================
+   NIBF design system
+   --------------------------------------------------------------------------
+   Ported from the inline styles of the six hand-written HTML pages.
+
+   PARITY RULE (Phases 1-2): every value here reproduces the original exactly.
+   The accessibility problems below are deliberately preserved for now so the
+   visual-regression gate stays meaningful. Phase 3 fixes them by editing the
+   token values only -- which is the entire point of extracting them.
+
+   Known-failing contrast, to be corrected in Phase 3:
+     --faint   #9AA0B4  2.6:1 on white  ->  #6C7288 (4.83:1)
+     --fainter #B7BCCB  1.9:1 on white  ->  #6C7288 (4.83:1)
+     --caption #7A8099  3.9:1 on white  ->  #6C7288 (4.83:1)
+     --gold    #A9812F  3.6:1 on white  ->  #8A6A26 (5.03:1) for TEXT only;
+               the rules and underlines keep the original gold.
+   ========================================================================== */
+
+:root {
+  /* brand */
+  --blue: #1C2F8F;
+  --gold: #A9812F;
+
+  /* ink */
+  --ink: #2A2E3D;
+  --muted: #4A4F60;
+  --soft: #6C7288;
+  --caption: #7A8099;
+  --faint: #9AA0B4;
+  --fainter: #B7BCCB;
+
+  /* surfaces */
+  --white: #FFFFFF;
+  --panel: #FCFBF8;
+
+  /* hairlines, all derived from --blue at low alpha */
+  --rule-faint: rgba(28, 47, 143, .08);
+  --rule: rgba(28, 47, 143, .12);
+  --rule-nav: rgba(28, 47, 143, .14);
+  --rule-mobile: rgba(28, 47, 143, .15);
+  --rule-strong: rgba(28, 47, 143, .16);
+  --rule-btn: rgba(28, 47, 143, .25);
+  --rule-ghost: rgba(28, 47, 143, .3);
+
+  /* type */
+  --font-display: 'EB Garamond', Georgia, serif;
+  --font-body: 'Work Sans', Helvetica, Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* metrics */
+  --nav-w: 18%;
+  --pad-x: 7vw;
+  --radius: 2px;
+
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}
+
+/* --------------------------------------------------------------- base ---- */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--blue); text-decoration: none; }
+a:hover { color: var(--gold); }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+/* -------------------------------------------------------------- shell ---- */
+
+[data-shell] {
+  display: flex;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: var(--white);
+}
+
+[data-main] { flex: 1; min-width: 0; }
+
+.section { padding: 92px var(--pad-x); }
+.section--hero { padding: 80px var(--pad-x) 96px; }
+.section--rule { border-top: 1px solid var(--rule); }
+.section--panel { background: var(--panel); }
+
+/* ------------------------------------------------------------- eyebrow --- */
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.eyebrow__rule {
+  width: 30px;
+  height: 1px;
+  background: var(--gold);
+  display: block;
+}
+
+/* ---------------------------------------------------------- typography --- */
+
+.h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(56px, 7vw, 100px);
+  line-height: .98;
+  letter-spacing: -.02em;
+  color: var(--blue);
+  margin: 0 0 28px;
+}
+
+.lede {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 26px;
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 34ch;
+  margin: 0 0 32px;
+}
+
+.intro {
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 52ch;
+  margin: 0 0 38px;
+}
+
+.h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 30px;
+  color: var(--blue);
+  margin: 14px 0 12px;
+}
+
+.h2--feature {
+  font-size: clamp(34px, 3.6vw, 48px);
+  line-height: 1.1;
+  margin: 22px 0 18px;
+}
+
+.body { font-size: 16px; line-height: 1.75; color: var(--muted); margin: 0; }
+
+.body--feature {
+  font-size: 17px;
+  line-height: 1.85;
+  max-width: 46ch;
+  margin: 0 0 26px;
+}
+
+.link { font-size: 16px; }
+
+/* ------------------------------------------------------------- buttons --- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 15px 26px;
+  font-size: 15px;
+  border-radius: var(--radius);
+}
+
+.btn--primary { gap: 10px; background: var(--blue); color: var(--white); }
+.btn--primary:hover { color: var(--white); }
+.btn--ghost { border: 1px solid var(--rule-ghost); color: var(--blue); }
+
+.btn-row { display: flex; flex-wrap: wrap; gap: 14px; }
+
+.arrow { font-family: var(--font-mono); }
+
+/* --------------------------------------------------------------- hero ---- */
+
+[data-hero-grid] {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 56px;
+  align-items: center;
+  margin-top: 40px;
+}
+
+[data-hero-stage] {
+  position: relative;
+  height: min(58vh, 470px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1100px;
+}
+
+[data-hero-3d] { position: absolute; inset: 0; }
+
+.hero__hint {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--faint);
+}
+
+/* -------------------------------------------------------------- cards ---- */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+  margin-top: 34px;
+}
+
+.card {
+  display: block;
+  color: inherit;
+  background: var(--white);
+  border: 1px solid var(--rule-strong);
+  padding: 30px;
+  transition: transform .5s var(--ease), box-shadow .5s;
+}
+
+.card:hover { color: inherit; }
+
+.card__num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--faint);
+}
+
+/* ------------------------------------------------------------ feature ---- */
+
+[data-two-col] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+/* Striped stand-in shown wherever real artwork has not been uploaded yet.
+   Removing it is a content problem, not a CSS one. */
+.placeholder {
+  position: relative;
+  border: 1px solid var(--rule-strong);
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(28, 47, 143, .11) 0 8px,
+    rgba(28, 47, 143, 0) 8px 16px
+  );
+  transition: transform .5s var(--ease), box-shadow .5s;
+}
+
+.placeholder--4x3 { aspect-ratio: 4 / 3; }
+
+.placeholder__caption {
+  position: absolute;
+  bottom: 14px;
+  left: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--caption);
+}
+
+/* ----------------------------------------------------------- pagefoot ---- */
+
+.pagefoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 44px var(--pad-x) 56px;
+  border-top: 1px solid var(--rule);
+}
+
+.pagefoot__copy {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--faint);
+}
+
+.pagefoot__next {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--blue);
+}
+
+.pagefoot__next-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--faint);
+}
+
+/* ---------------------------------------------------------- nav rail ----- */
+
+[data-nav-mount] {
+  width: var(--nav-w);
+  min-width: 210px;
+  flex: 0 0 auto;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+[data-nav-rail] {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 44px 26px;
+  border-left: 1px solid var(--rule-nav);
+  background: var(--white);
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+
+.brand__word {
+  font-family: var(--font-display);
+  font-size: 24px;
+  letter-spacing: .1em;
+  color: var(--blue);
+}
+
+/* The roundel: a half-filled ring with an inverted half-filled centre. */
+.mark {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1.5px var(--blue);
+  display: block;
+}
+
+.mark__top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: var(--blue);
+  display: block;
+}
+
+.mark__core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--white);
+  display: block;
+}
+
+.mark__core-fill {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--blue);
+  display: block;
+}
+
+[data-burger] {
+  display: none;
+  align-items: center;
+  gap: 9px;
+  background: none;
+  border: 1px solid var(--rule-btn);
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  color: var(--blue);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .1em;
+  cursor: pointer;
+}
+
+[data-nav-list] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav__link {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 10px 0;
+  font-size: 18px;
+  color: var(--soft);
+  border-bottom: 1px solid var(--rule-faint);
+}
+
+.nav__link[aria-current='page'] {
+  color: var(--blue);
+  font-weight: 500;
+  border-bottom-color: var(--gold);
+}
+
+.nav__num { font-family: var(--font-mono); font-size: 11px; color: var(--fainter); }
+
+[data-rail-foot] { display: flex; flex-direction: column; gap: 12px; }
+
+.rail-foot__social { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 14px; }
+.rail-foot__mail { font-size: 14px; color: var(--soft); }
+
+.rail-foot__boip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  color: var(--fainter);
+}
+
+/* --------------------------------------------------------- responsive ---- */
+/* Ported verbatim from the original. The single 1024px cliff means a tablet
+   gets the phone layout; Phase 3 adds an intermediate state. Until then this
+   must stay byte-equivalent or the parity gate fails for the wrong reason. */
+
+@media (max-width: 1024px) {
+  [data-shell] { flex-direction: column-reverse !important; }
+
+  [data-nav-mount] {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: auto !important;
+    flex: none !important;
+    height: auto !important;
+    z-index: 60;
+    background: #fff;
+  }
+
+  [data-nav-rail] {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    height: auto !important;
+    padding: 14px 20px !important;
+    border-left: none !important;
+    border-bottom: 1px solid var(--rule-mobile) !important;
+    position: relative;
+  }
+
+  [data-nav-list] { display: none !important; }
+
+  [data-nav-rail][data-nav-open] [data-nav-list] {
+    display: flex !important;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 18px 20px 24px;
+    border-bottom: 1px solid var(--rule-mobile);
+  }
+
+  [data-burger] { display: inline-flex !important; }
+  [data-rail-foot] { display: none !important; }
+  [data-main] { padding-top: 74px !important; }
+
+  [data-hero-grid],
+  [data-gallery-grid],
+  [data-two-col],
+  [data-terms-grid] { grid-template-columns: 1fr !important; }
+
+  .h1 { font-size: 54px !important; }
+
+  [data-lib-row] { grid-template-columns: 1fr !important; gap: 6px !important; }
+}

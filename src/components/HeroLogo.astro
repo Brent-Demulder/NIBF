@@ -1,0 +1,187 @@
+---
+// The NIBF roundel rendered in 3D and draggable.
+// three.js is ~600KB, so it is imported dynamically: Vite code-splits it into
+// its own chunk that only the homepage ever requests. It must never end up in
+// the shared bundle.
+---
+
+<div data-hero-stage>
+  <div data-hero-3d></div>
+  <span class="hero__hint">pak vast en draai</span>
+</div>
+
+<script>
+  const mount = document.querySelector<HTMLElement>('[data-hero-3d]');
+  const motion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (mount) {
+    import('three')
+      .then((THREE) => {
+        if (!mount.isConnected) return;
+
+        const BLUE = 0x1c2f8f;
+        const OFFWHITE = 0xf7f8fc;
+        const R = 1;
+        const r = 0.5;
+        const depth = 0.34;
+
+        const halfRing = () => {
+          const s = new THREE.Shape();
+          s.absarc(0, 0, R, 0, Math.PI, false);
+          s.lineTo(-r, 0);
+          s.absarc(0, 0, r, Math.PI, 0, true);
+          s.closePath();
+          return s;
+        };
+
+        const halfDisc = () => {
+          const s = new THREE.Shape();
+          s.absarc(0, 0, r, 0, Math.PI, false);
+          s.closePath();
+          return s;
+        };
+
+        const extrude = (shape: InstanceType<typeof THREE.Shape>) => {
+          const g = new THREE.ExtrudeGeometry(shape, {
+            depth,
+            bevelEnabled: true,
+            bevelThickness: 0.02,
+            bevelSize: 0.02,
+            bevelSegments: 2,
+            curveSegments: 72,
+          });
+          g.translate(0, 0, -depth / 2);
+          g.computeVertexNormals();
+          return g;
+        };
+
+        const mat = (color: number) =>
+          new THREE.MeshStandardMaterial({ color, roughness: 0.42, metalness: 0.06 });
+
+        const group = new THREE.Group();
+        const parts: [InstanceType<typeof THREE.Shape>, number, number][] = [
+          [halfRing(), BLUE, 0],
+          [halfRing(), OFFWHITE, Math.PI],
+          [halfDisc(), OFFWHITE, 0],
+          [halfDisc(), BLUE, Math.PI],
+        ];
+        for (const [shape, color, rot] of parts) {
+          const m = new THREE.Mesh(extrude(shape), mat(color));
+          m.rotation.z = rot;
+          group.add(m);
+        }
+
+        group.add(
+          new THREE.Mesh(
+            new THREE.TorusGeometry(R + 0.005, 0.012, 8, 96),
+            new THREE.MeshStandardMaterial({ color: BLUE, roughness: 0.5 })
+          )
+        );
+
+        const scene = new THREE.Scene();
+        scene.add(group);
+        scene.add(new THREE.AmbientLight(0xffffff, 0.72));
+        scene.add(new THREE.HemisphereLight(0xdfe6ff, 0xbfc4d8, 0.55));
+
+        const key = new THREE.DirectionalLight(0xffffff, 1.5);
+        key.position.set(2.6, 3.4, 4.2);
+        scene.add(key);
+
+        const fill = new THREE.DirectionalLight(0xc9d4ff, 0.55);
+        fill.position.set(-3, -1.5, 2);
+        scene.add(fill);
+
+        const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+        camera.position.set(0, 0, 5.4);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setClearAlpha(0);
+        renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+        renderer.domElement.style.cssText = 'display:block; width:100%; height:100%;';
+        mount.appendChild(renderer.domElement);
+
+        const resize = () => {
+          const w = mount.clientWidth || 400;
+          const h = mount.clientHeight || 400;
+          renderer.setSize(w, h, false);
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+        };
+        resize();
+        new ResizeObserver(resize).observe(mount);
+
+        // Rest pose. With reduced motion this is where it stays, which is what
+        // makes the homepage screenshot deterministic.
+        const cur = { y: 0, x: -0.18 };
+        const target = { x: -0.18 };
+
+        let dragging = false;
+        let lastX = 0;
+        let lastY = 0;
+        let lastT = 0;
+
+        const BASE = 0.3;
+        let vel = BASE;
+        let idleDir = 1;
+
+        const el = renderer.domElement;
+        el.style.cursor = 'grab';
+        el.style.touchAction = 'none';
+
+        el.addEventListener('pointerdown', (e) => {
+          if (!motion) return;
+          dragging = true;
+          lastX = e.clientX;
+          lastY = e.clientY;
+          lastT = performance.now();
+          vel = 0;
+          el.style.cursor = 'grabbing';
+          el.setPointerCapture?.(e.pointerId);
+        });
+
+        el.addEventListener('pointermove', (e) => {
+          if (!dragging) return;
+          const now = performance.now();
+          const dt = Math.max(0.008, (now - lastT) / 1000);
+          const dy = (e.clientX - lastX) * 0.011;
+          cur.y += dy;
+          cur.x = Math.max(-0.7, Math.min(0.7, cur.x + (e.clientY - lastY) * 0.006));
+          vel = Math.max(-9, Math.min(9, dy / dt));
+          lastX = e.clientX;
+          lastY = e.clientY;
+          lastT = now;
+        });
+
+        const release = () => {
+          if (!dragging) return;
+          dragging = false;
+          el.style.cursor = 'grab';
+          if (Math.abs(vel) > 0.06) idleDir = Math.sign(vel);
+          else vel = idleDir * BASE;
+          target.x = -0.18;
+        };
+        el.addEventListener('pointerup', release);
+        el.addEventListener('pointercancel', release);
+        el.addEventListener('lostpointercapture', release);
+
+        let prev = performance.now();
+        const draw = (t: number) => {
+          const dt = Math.min(0.05, (t - prev) / 1000);
+          prev = t;
+          if (!dragging && motion) {
+            vel += (idleDir * BASE - vel) * (1 - Math.exp(-dt * 1.5));
+            cur.y += vel * dt;
+            cur.x += (target.x - cur.x) * 0.08;
+          }
+          group.rotation.y = cur.y;
+          group.rotation.x = cur.x;
+          renderer.render(scene, camera);
+          requestAnimationFrame(draw);
+        };
+        requestAnimationFrame(draw);
+      })
+      .catch((err) => {
+        console.warn('three.js kon niet laden', err);
+      });
+  }
+</script>

@@ -1,0 +1,62 @@
+---
+import { pages, site } from '../config/site';
+
+interface Props {
+  /** Path of the page currently being rendered, e.g. "/over-mij". */
+  current: string;
+}
+
+const { current } = Astro.props;
+---
+
+<div data-nav-mount>
+  <nav data-nav-rail aria-label="Hoofdnavigatie">
+    <a href="/" class="brand">
+      <span aria-hidden="true" class="mark">
+        <span class="mark__top"></span>
+        <span class="mark__core"><span class="mark__core-fill"></span></span>
+      </span>
+      <span class="brand__word">{site.name}</span>
+    </a>
+
+    <button data-burger type="button" aria-label="Menu openen" aria-expanded="false">MENU</button>
+
+    <ul data-nav-list>
+      {
+        pages.map((p) => (
+          <li>
+            <a
+              href={p.href}
+              class="nav__link"
+              data-nav-item={p.key}
+              aria-current={p.href === current ? 'page' : undefined}
+            >
+              <span class="nav__num">{p.n}</span>{p.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div data-rail-foot>
+      <div class="rail-foot__social">
+        <a href="/contact">Instagram</a>
+        <a href="/contact">LinkedIn</a>
+      </div>
+      <a href={`mailto:${site.email}`} class="rail-foot__mail">{site.email}</a>
+      <span class="rail-foot__boip">BOIP-GEREGISTREERD MERK</span>
+    </div>
+  </nav>
+</div>
+
+<script>
+  // Burger toggle for the <=1024px layout, where the rail becomes a top bar.
+  const burger = document.querySelector<HTMLButtonElement>('[data-burger]');
+  burger?.addEventListener('click', () => {
+    const rail = burger.closest<HTMLElement>('[data-nav-rail]');
+    if (!rail) return;
+    const open = rail.hasAttribute('data-nav-open');
+    rail.toggleAttribute('data-nav-open', !open);
+    burger.setAttribute('aria-expanded', String(!open));
+  });
+</script>

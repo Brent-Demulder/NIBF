@@ -1,0 +1,18 @@
+---
+import { nextPage, site } from '../config/site';
+
+interface Props {
+  /** Path of the page currently being rendered; the next link derives from it. */
+  current: string;
+}
+
+const { current } = Astro.props;
+const next = nextPage(current);
+---
+
+<div class="pagefoot">
+  <span class="pagefoot__copy">{site.copyright}</span>
+  <a href={next.href} class="pagefoot__next">
+    <span class="pagefoot__next-label">VOLGENDE</span>{next.label} →
+  </a>
+</div>

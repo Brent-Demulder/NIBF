@@ -1,0 +1,20 @@
+---
+interface Props {
+  text: string;
+  /** Section openers pair the label with a short accent rule; inline ones don't. */
+  rule?: boolean;
+}
+
+const { text, rule = true } = Astro.props;
+---
+
+{
+  rule ? (
+    <div class="eyebrow">
+      <span class="eyebrow__rule" />
+      <span class="label">{text}</span>
+    </div>
+  ) : (
+    <span class="label">{text}</span>
+  )
+}
