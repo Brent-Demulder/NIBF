@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+
+// Where the Netlify Forms POST lands. Deliberately not in config/site.ts, so
+// it stays out of the nav rail and the VOLGENDE chain. BaseLayout handles an
+// unlisted path fine: no nav item is marked current, and the next link falls
+// through to Home.
+---
+
+<BaseLayout
+  title="Bedankt — NIBF"
+  path="/bedankt"
+  description="Je bericht is verzonden."
+>
+  <section class="section--page">
+    <Eyebrow text="Bericht verzonden" />
+    <h1 class="h1 h1--page">Bedankt voor je bericht</h1>
+    <p class="page-intro">
+      Je bericht is goed aangekomen. Ik antwoord doorgaans binnen vijf werkdagen.
+    </p>
+    <div class="btn-row">
+      <a href="/" class="btn btn--primary">Terug naar home <span class="arrow">→</span></a>
+      <a href="/kunst-gallerij" class="btn btn--ghost">Bekijk de galerij</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-intro {
+    max-width: 52ch;
+    margin: 0 0 38px;
+  }
+</style>

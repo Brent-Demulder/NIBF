@@ -46,8 +46,25 @@ const onderwerpen = [
         </div>
       </div>
 
-      {/* Still the original demo form. Phase 3 wires it to Netlify Forms. */}
-      <form id="contact-form" class="form">
+      {/* Netlify Forms. The build bot parses this out of the generated HTML at
+          deploy time, which works with static output -- no adapter, no
+          function. Submissions land in the Netlify dashboard with email
+          notifications, free up to 100/month.
+
+          form-name is required for the POST to be attributed. bot-field is a
+          honeypot: real people never see it, bots fill it in and get dropped. */}
+      <form
+        name="contact"
+        method="POST"
+        action="/bedankt"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        class="form"
+      >
+        <input type="hidden" name="form-name" value="contact" />
+        <p class="honeypot">
+          <label>Laat dit veld leeg <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+        </p>
         <label>
           Naam
           <input type="text" name="naam" required />
@@ -67,7 +84,6 @@ const onderwerpen = [
           <textarea name="bericht" rows="5"></textarea>
         </label>
         <button type="submit">Versturen</button>
-        <span data-form-msg>Bedankt — je bericht is verzonden (demo).</span>
       </form>
     </div>
   </section>
@@ -82,13 +98,13 @@ const onderwerpen = [
   [data-two-col] {
     margin-top: 40px;
   }
-</style>
 
-<script>
-  const form = document.getElementById('contact-form');
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const msg = form.querySelector<HTMLElement>('[data-form-msg]');
-    if (msg) msg.style.display = 'block';
-  });
-</script>
+  /* Honeypot. Hidden from people without display:none, which some bots check. */
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+</style>
