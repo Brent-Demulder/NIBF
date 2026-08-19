@@ -15,11 +15,7 @@ export default defineConfig({
   site: 'https://nibf.netlify.app',
   output: 'static',
 
-  integrations: [
-    // /bedankt is where the contact form POSTs; it is not a content page and
-    // should not be advertised to crawlers.
-    sitemap({ filter: (page) => !page.includes('/bedankt') }),
-  ],
+  integrations: [sitemap()],
 
   build: {
     format: 'directory',

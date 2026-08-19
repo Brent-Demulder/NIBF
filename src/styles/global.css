@@ -102,7 +102,16 @@ select:focus-visible {
   background: var(--white);
 }
 
-[data-main] { flex: 1; min-width: 0; }
+/* Column flex with a full-viewport minimum so .pagefoot can be pushed to the
+   bottom. Several pages are short now that the invented content is gone, and
+   without this the footer floats mid-screen with dead space beneath it. */
+[data-main] {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
 .section { padding: 92px var(--pad-x); }
 .section--hero { padding: 80px var(--pad-x) 96px; }
@@ -302,6 +311,7 @@ select:focus-visible {
 /* ----------------------------------------------------------- pagefoot ---- */
 
 .pagefoot {
+  margin-top: auto;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -603,55 +613,19 @@ select:focus-visible {
 }
 
 /* -------------------------------------------------------------- contact -- */
+/* The contact form was removed in favour of a plain mailto: Netlify Forms is
+   a deploy-time mechanism that could never be tested locally, and one address
+   is less to maintain than a form, a honeypot and a thank-you page. */
 
-.field-list { display: grid; gap: 16px; font-size: 16px; }
-
-.field-label {
-  color: var(--soft);
-  display: block;
-  font-size: 13px;
-  margin-bottom: 3px;
+.contact-mail {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.2vw, 42px);
+  line-height: 1.2;
+  color: var(--blue);
 }
-
-.field-value { color: var(--muted); }
-.socials { display: flex; gap: 18px; }
-
-.form {
-  display: grid;
-  gap: 20px;
-  background: var(--white);
-  padding: 34px;
-  border: 1px solid var(--rule-strong);
-}
-
-.form label { display: grid; gap: 8px; font-size: 14px; color: var(--muted); }
-
-.form input,
-.form select,
-.form textarea {
-  font-family: var(--font-body);
-  font-size: 16px;
-  padding: 13px 14px;
-  border: 1px solid var(--rule-btn);
-  background: var(--white);
-  color: var(--ink);
-  border-radius: var(--radius);
-}
-
-.form textarea { resize: vertical; }
-
-.form button {
-  font-family: var(--font-body);
-  font-size: 15px;
-  padding: 15px 22px;
-  background: var(--blue);
-  color: var(--white);
-  border: none;
-  border-radius: var(--radius);
-  cursor: pointer;
-}
-
-[data-form-msg] { display: none; font-size: 14px; color: var(--gold-text); }
 
 /* --------------------------------------------------------- responsive ---- */
 /* The original had a single 1024px cliff that flipped everything at once, so

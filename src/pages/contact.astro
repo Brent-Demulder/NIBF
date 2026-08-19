@@ -2,14 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Eyebrow from '../components/Eyebrow.astro';
 import { site } from '../config/site';
-
-const onderwerpen = [
-  'Licentieverzoek',
-  'Tentoonstelling',
-  'Publicatie',
-  'Lezing of workshop',
-  'Anders',
-];
 ---
 
 <BaseLayout
@@ -20,82 +12,19 @@ const onderwerpen = [
   <section class="section--page">
     <Eyebrow text="05 — Contact" />
     <h1 class="h1 h1--page">Neem contact op</h1>
+    <p class="page-intro">
+      Voor licenties, tentoonstellingen, publicaties, lezingen of workshops.
+    </p>
 
-    <div data-two-col class="two-col--start">
-      <div>
-        <p class="page-intro">
-          Voor licenties, tentoonstellingen, publicaties, lezingen of workshops.
-        </p>
-        {/* The atelier line said Amsterdam, which is wrong, and the Instagram
-            and LinkedIn links both pointed at this page. Both removed until
-            there is something real to put there. */}
-        <div class="field-list">
-          <div>
-            <span class="field-label">E-mail</span>
-            <a href={`mailto:${site.email}`}>{site.email}</a>
-          </div>
-        </div>
-      </div>
-
-      {/* Netlify Forms. The build bot parses this out of the generated HTML at
-          deploy time, which works with static output -- no adapter, no
-          function. Submissions land in the Netlify dashboard with email
-          notifications, free up to 100/month.
-
-          form-name is required for the POST to be attributed. bot-field is a
-          honeypot: real people never see it, bots fill it in and get dropped. */}
-      <form
-        name="contact"
-        method="POST"
-        action="/bedankt"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
-        class="form"
-      >
-        <input type="hidden" name="form-name" value="contact" />
-        <p class="honeypot">
-          <label>Laat dit veld leeg <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
-        </p>
-        <label>
-          Naam
-          <input type="text" name="naam" required />
-        </label>
-        <label>
-          E-mailadres
-          <input type="email" name="email" required />
-        </label>
-        <label>
-          Onderwerp
-          <select name="onderwerp">
-            {onderwerpen.map((o) => <option>{o}</option>)}
-          </select>
-        </label>
-        <label>
-          Bericht
-          <textarea name="bericht" rows="5"></textarea>
-        </label>
-        <button type="submit">Versturen</button>
-      </form>
-    </div>
+    <a href={`mailto:${site.email}`} class="contact-mail">
+      {site.email} <span class="arrow">→</span>
+    </a>
   </section>
 </BaseLayout>
 
 <style>
   .page-intro {
-    max-width: 44ch;
-    margin: 0 0 34px;
-  }
-
-  [data-two-col] {
-    margin-top: 40px;
-  }
-
-  /* Honeypot. Hidden from people without display:none, which some bots check. */
-  .honeypot {
-    position: absolute;
-    left: -9999px;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
+    max-width: 46ch;
+    margin: 0 0 40px;
   }
 </style>
