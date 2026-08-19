@@ -1,31 +1,43 @@
 /* ==========================================================================
    NIBF design system
    --------------------------------------------------------------------------
-   Ported from the inline styles of the six hand-written HTML pages.
+   Palette
+     --primary      #1c2839   desaturated slate-blue, H215 S34 L17
+     --accent       #C46A2B   burnt terracotta -- DECORATIVE ONLY, 3.86:1
+     --accent-text  #B25E24   the same accent darkened to 4.65:1 for text
 
-   Phases 1-2 reproduced the original values exactly, so the visual-regression
-   gate could prove the port changed nothing. Phase 3 then changed things on
-   purpose, and because everything had been extracted into tokens first, the
-   contrast fixes were a handful of lines rather than a hunt through six files.
+   Contrast against white, AA needing 4.5:1 for text under 18.5px:
+     --primary      14.87:1   (the previous blue managed 11.35:1)
+     --accent-text   5.02:1 on white, 4.86:1 on --panel
+     --accent        3.86:1   fails, so it is confined to rules, underlines
+                              and borders where contrast rules do not apply
+     --ink           #2A2E3D  --muted #4A4F60  --soft #6C7288 (4.83:1)
+     --danger        #9E2B2B  7.41:1
 
-   Contrast corrected in Phase 3 (all measured against white, AA needs 4.5:1
-   for text under 18.5px):
-     #9AA0B4  2.6:1  ->  --soft      #6C7288  4.83:1
-     #B7BCCB  1.9:1  ->  --soft      #6C7288  4.83:1
-     #7A8099  3.9:1  ->  --soft      #6C7288  4.83:1
-     #8A90A6  3.2:1  ->  --soft      #6C7288  4.83:1
-     #A9812F  3.6:1  ->  --gold-text #8A6A26  5.03:1  (text only -- rules,
-              underlines and borders keep the original --gold, where contrast
-              rules do not apply)
+   The neutral ramp sits at H~227 and the primary at H215 -- close enough at
+   these saturations that they read as one family, so the greys were left
+   alone when the palette changed.
+
+   --danger was #B23A3A, which sat too near the old gold and is nearer still
+   to a terracotta accent: the "wel toegestaan" plus and "niet toegestaan"
+   minus would have read as two shades of the same colour. It is now a deeper
+   brick red, clearly a warning rather than a second accent.
+
+   Every hairline is the primary at low alpha. Because the new primary is
+   darker but far less saturated, the same alphas land at the same lightness
+   while reading as neutral greys rather than pale blues.
    ========================================================================== */
 
 :root {
   /* brand */
-  --blue: #1C2F8F;
-  /* Decorative only -- rules, underlines, borders. 3.6:1, too low for text. */
-  --gold: #A9812F;
-  /* Text-safe gold, 5.03:1. */
-  --gold-text: #8A6A26;
+  --primary: #1c2839;
+  /* Decorative only -- rules, underlines, borders. 3.86:1, too low for text. */
+  --accent: #C46A2B;
+  /* The same accent darkened until it passes AA for text. Measured against
+     BOTH grounds, because the eyebrow labels sit on --panel as well as white:
+     5.02:1 on #fff, 4.86:1 on #FCFBF8. The first attempt (#B25E24) cleared
+     white at 4.65 but landed on 4.49 over the panel -- a hundredth under. */
+  --accent-text: #AB5921;
 
   /* ink.
      Phase 3: #9AA0B4 (2.6:1), #B7BCCB (1.9:1), #7A8099 (3.9:1) and #8A90A6
@@ -41,20 +53,20 @@
   /* surfaces */
   --white: #FFFFFF;
   --panel: #FCFBF8;
-  --row-hover: rgba(28, 47, 143, .035);
+  --row-hover: rgba(28, 40, 57, .035);
 
   /* one-off inks from the inner pages (both already pass AA) */
   --card-body: #5A6076;
-  --danger: #B23A3A;
+  --danger: #9E2B2B;
 
-  /* hairlines, all derived from --blue at low alpha */
-  --rule-faint: rgba(28, 47, 143, .08);
-  --rule: rgba(28, 47, 143, .12);
-  --rule-nav: rgba(28, 47, 143, .14);
-  --rule-mobile: rgba(28, 47, 143, .15);
-  --rule-strong: rgba(28, 47, 143, .16);
-  --rule-btn: rgba(28, 47, 143, .25);
-  --rule-ghost: rgba(28, 47, 143, .3);
+  /* hairlines, all derived from --primary at low alpha */
+  --rule-faint: rgba(28, 40, 57, .08);
+  --rule: rgba(28, 40, 57, .12);
+  --rule-nav: rgba(28, 40, 57, .14);
+  --rule-mobile: rgba(28, 40, 57, .15);
+  --rule-strong: rgba(28, 40, 57, .16);
+  --rule-btn: rgba(28, 40, 57, .25);
+  --rule-ghost: rgba(28, 40, 57, .3);
 
   /* type */
   --font-display: 'EB Garamond', Georgia, serif;
@@ -105,8 +117,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-a { color: var(--blue); text-decoration: none; }
-a:hover { color: var(--gold-text); }
+a { color: var(--primary); text-decoration: none; }
+a:hover { color: var(--accent-text); }
 
 /* Links inside running prose get a real underline -- set below the baseline
    and lighter than the text, the way a printed page would do it. Navigation,
@@ -119,7 +131,7 @@ a:hover { color: var(--gold-text); }
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: .18em;
-  text-decoration-color: rgba(28, 47, 143, .35);
+  text-decoration-color: rgba(28, 40, 57, .35);
   transition: text-decoration-color .2s var(--ease), color .2s var(--ease);
 }
 
@@ -128,14 +140,14 @@ a:hover { color: var(--gold-text); }
 .callout a:hover,
 .page-intro a:hover { text-decoration-color: currentColor; }
 
-::selection { background: var(--blue); color: #fff; }
+::selection { background: var(--primary); color: #fff; }
 
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 2px solid var(--blue);
+  outline: 2px solid var(--primary);
   outline-offset: 3px;
 }
 
@@ -181,7 +193,7 @@ select:focus-visible {
   font-size: 12px;
   letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--gold-text);
+  color: var(--accent-text);
 }
 
 .eyebrow {
@@ -194,7 +206,7 @@ select:focus-visible {
 .eyebrow__rule {
   width: 30px;
   height: 1px;
-  background: var(--gold);
+  background: var(--accent);
   display: block;
 }
 
@@ -209,7 +221,7 @@ select:focus-visible {
   font-size: clamp(56px, 7vw, 100px);
   line-height: .98;
   letter-spacing: -.02em;
-  color: var(--blue);
+  color: var(--primary);
   margin: 0 0 28px;
 }
 
@@ -238,7 +250,7 @@ select:focus-visible {
   font-family: var(--font-display);
   font-weight: 500;
   font-size: 30px;
-  color: var(--blue);
+  color: var(--primary);
   margin: 14px 0 12px;
 }
 
@@ -259,9 +271,9 @@ select:focus-visible {
   border-radius: var(--radius);
 }
 
-.btn--primary { gap: 10px; background: var(--blue); color: var(--white); }
+.btn--primary { gap: 10px; background: var(--primary); color: var(--white); }
 .btn--primary:hover { color: var(--white); }
-.btn--ghost { border: 1px solid var(--rule-ghost); color: var(--blue); }
+.btn--ghost { border: 1px solid var(--rule-ghost); color: var(--primary); }
 
 .btn-row { display: flex; flex-wrap: wrap; gap: 14px; }
 
@@ -337,21 +349,21 @@ select:focus-visible {
 /* Striped stand-in shown wherever real artwork has not been uploaded yet.
    Removing it is a content problem, not a CSS one. */
 .placeholder {
-  --stripe: rgba(28, 47, 143, .11);
+  --stripe: rgba(28, 40, 57, .11);
   position: relative;
   border: 1px solid var(--rule-strong);
   background: repeating-linear-gradient(
     135deg,
     var(--stripe) 0 8px,
-    rgba(28, 47, 143, 0) 8px 16px
+    rgba(28, 40, 57, 0) 8px 16px
   );
 }
 
 /* The original used a slightly different stripe alpha per page. */
-.placeholder--s09 { --stripe: rgba(28, 47, 143, .09); }
-.placeholder--s10 { --stripe: rgba(28, 47, 143, .10); }
-.placeholder--s13 { --stripe: rgba(28, 47, 143, .13); }
-.placeholder--gold { --stripe: rgba(169, 129, 47, .16); }
+.placeholder--s09 { --stripe: rgba(28, 40, 57, .09); }
+.placeholder--s10 { --stripe: rgba(28, 40, 57, .10); }
+.placeholder--s13 { --stripe: rgba(28, 40, 57, .13); }
+.placeholder--accent { --stripe: rgba(196, 106, 43, .16); }
 
 .placeholder--4x3 { aspect-ratio: 4 / 3; }
 .placeholder--4x5 { aspect-ratio: 4 / 5; }
@@ -397,7 +409,7 @@ select:focus-visible {
   gap: 12px;
   font-family: var(--font-display);
   font-size: 24px;
-  color: var(--blue);
+  color: var(--primary);
 }
 
 .pagefoot__next-label {
@@ -449,7 +461,7 @@ select:focus-visible {
   font-family: var(--font-display);
   font-size: 24px;
   letter-spacing: .1em;
-  color: var(--blue);
+  color: var(--primary);
 }
 
 /* The roundel: a half-filled ring with an inverted half-filled centre. */
@@ -461,7 +473,7 @@ select:focus-visible {
   border-radius: 50%;
   overflow: hidden;
   background: var(--white);
-  box-shadow: inset 0 0 0 1.5px var(--blue);
+  box-shadow: inset 0 0 0 1.5px var(--primary);
   display: block;
 }
 
@@ -471,7 +483,7 @@ select:focus-visible {
   left: 0;
   right: 0;
   height: 50%;
-  background: var(--blue);
+  background: var(--primary);
   display: block;
 }
 
@@ -494,7 +506,7 @@ select:focus-visible {
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--blue);
+  background: var(--primary);
   display: block;
 }
 
@@ -506,7 +518,7 @@ select:focus-visible {
   border: 1px solid var(--rule-btn);
   padding: 10px 14px;
   border-radius: var(--radius);
-  color: var(--blue);
+  color: var(--primary);
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: .1em;
@@ -536,9 +548,9 @@ select:focus-visible {
 }
 
 .nav__link[aria-current='page'] {
-  color: var(--blue);
+  color: var(--primary);
   font-weight: 500;
-  border-bottom-color: var(--gold);
+  border-bottom-color: var(--accent);
 }
 
 .nav__num { font-family: var(--font-mono); font-size: 11px; color: var(--soft); }
@@ -603,9 +615,9 @@ select:focus-visible {
 .lib__row:hover { background: var(--row-hover); color: inherit; }
 
 .lib__year { font-family: var(--font-mono); font-size: 12px; color: var(--soft); }
-.lib__title { font-family: var(--font-display); font-size: 26px; color: var(--blue); }
+.lib__title { font-family: var(--font-display); font-size: 26px; color: var(--primary); }
 .lib__kind { font-size: 14px; color: var(--soft); }
-.lib__cta { font-family: var(--font-mono); font-size: 12px; color: var(--gold-text); }
+.lib__cta { font-family: var(--font-mono); font-size: 12px; color: var(--accent-text); }
 
 /* ------------------------------------------------------ auteursrechten --- */
 
@@ -632,7 +644,7 @@ select:focus-visible {
 .fact__value {
   font-family: var(--font-display);
   font-size: 26px;
-  color: var(--blue);
+  color: var(--primary);
   line-height: 1.2;
 }
 
@@ -648,7 +660,7 @@ select:focus-visible {
   font-family: var(--font-display);
   font-weight: 500;
   font-size: 26px;
-  color: var(--blue);
+  color: var(--primary);
   margin: 0 0 18px;
 }
 
@@ -662,13 +674,13 @@ select:focus-visible {
   color: var(--muted);
 }
 
-.terms__yes { color: var(--gold-text); font-family: var(--font-mono); }
+.terms__yes { color: var(--accent-text); font-family: var(--font-mono); }
 .terms__no { color: var(--danger); font-family: var(--font-mono); }
 
 .callout {
   margin-top: 52px;
   padding: 28px 30px;
-  border-left: 2px solid var(--gold);
+  border-left: 2px solid var(--accent);
   background: var(--panel);
   max-width: 70ch;
 }
@@ -713,7 +725,7 @@ select:focus-visible {
   font-family: var(--font-display);
   font-size: clamp(28px, 3.2vw, 42px);
   line-height: 1.2;
-  color: var(--blue);
+  color: var(--primary);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -806,7 +818,7 @@ select:focus-visible {
     position: fixed;
     inset: var(--bar-h) 0 0;
     z-index: 1;
-    background: rgba(28, 47, 143, .28);
+    background: rgba(28, 40, 57, .32);
     opacity: 0;
     pointer-events: none;
     transition: opacity .34s var(--ease);

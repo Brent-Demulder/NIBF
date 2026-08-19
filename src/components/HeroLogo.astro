@@ -19,8 +19,10 @@
       .then((THREE) => {
         if (!mount.isConnected) return;
 
-        const BLUE = 0x1c2f8f;
-        const OFFWHITE = 0xf7f8fc;
+        // Matches --primary. The light halves are a faintly cool off-white so
+        // the mark still separates from the white page.
+        const PRIMARY = 0x1c2839;
+        const OFFWHITE = 0xf6f7f9;
         const R = 1;
         const r = 0.5;
         const depth = 0.34;
@@ -60,10 +62,10 @@
 
         const group = new THREE.Group();
         const parts: [InstanceType<typeof THREE.Shape>, number, number][] = [
-          [halfRing(), BLUE, 0],
+          [halfRing(), PRIMARY, 0],
           [halfRing(), OFFWHITE, Math.PI],
           [halfDisc(), OFFWHITE, 0],
-          [halfDisc(), BLUE, Math.PI],
+          [halfDisc(), PRIMARY, Math.PI],
         ];
         for (const [shape, color, rot] of parts) {
           const m = new THREE.Mesh(extrude(shape), mat(color));
@@ -74,20 +76,27 @@
         group.add(
           new THREE.Mesh(
             new THREE.TorusGeometry(R + 0.005, 0.012, 8, 96),
-            new THREE.MeshStandardMaterial({ color: BLUE, roughness: 0.5 })
+            new THREE.MeshStandardMaterial({ color: PRIMARY, roughness: 0.5 })
           )
         );
 
         const scene = new THREE.Scene();
         scene.add(group);
         scene.add(new THREE.AmbientLight(0xffffff, 0.72));
-        scene.add(new THREE.HemisphereLight(0xdfe6ff, 0xbfc4d8, 0.55));
+        // Cool sky, cool ground -- the old values were tinted toward the
+        // previous blue and read slightly purple against slate.
+        scene.add(new THREE.HemisphereLight(0xe6ebf2, 0xc6ccd6, 0.55));
 
         const key = new THREE.DirectionalLight(0xffffff, 1.5);
         key.position.set(2.6, 3.4, 4.2);
         scene.add(key);
 
-        const fill = new THREE.DirectionalLight(0xc9d4ff, 0.55);
+        // The fill is warm, drawn from --accent. It is the one place the two
+        // brand colours meet: the mark stays primary and off-white, but the
+        // light bouncing into its shadows is terracotta, so the accent is
+        // present in the signature element without the mark being painted
+        // orange. Kept low so the off-white halves do not look dirty.
+        const fill = new THREE.DirectionalLight(0xd9a472, 0.42);
         fill.position.set(-3, -1.5, 2);
         scene.add(fill);
 

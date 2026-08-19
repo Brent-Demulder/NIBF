@@ -35,6 +35,8 @@ const canonical = new URL(path, Astro.site).href;
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {/* Tints the browser chrome on mobile to match the rail. */}
+    <meta name="theme-color" content="#1c2839" />
 
     {/* robots.txt only asks crawlers not to fetch; this is what actually keeps
         the page out of results while the site is a placeholder. */}
@@ -77,7 +79,7 @@ const canonical = new URL(path, Astro.site).href;
             card.style.transform =
               `perspective(1200px) rotateY(${(nx * 3.2).toFixed(2)}deg) ` +
               `rotateX(${(-ny * 3.2).toFixed(2)}deg) translateZ(14px)`;
-            card.style.boxShadow = '0 22px 50px -28px rgba(28,47,143,.35)';
+            card.style.boxShadow = '0 22px 50px -28px rgba(28,40,57,.35)';
           });
           card.addEventListener('mouseleave', () => {
             card.style.transform = 'perspective(1200px) rotateY(0deg) rotateX(0deg) translateZ(0)';
