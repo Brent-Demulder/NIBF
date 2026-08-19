@@ -95,6 +95,10 @@ const { current } = Astro.props;
       // reads as a rendering bug. Tab still walks into the links from here.
       if (open) drawer.focus();
       else if (document.activeElement === document.body) burger.focus();
+
+      // The hero listens for this and stops rendering while the panel is
+      // open, so the slide gets the frame budget to itself.
+      document.dispatchEvent(new CustomEvent('nibf:nav', { detail: { open } }));
     };
 
     const isOpen = () => mount.hasAttribute('data-nav-open');

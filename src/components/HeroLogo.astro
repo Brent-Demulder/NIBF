@@ -108,7 +108,10 @@
           camera.updateProjectionMatrix();
         };
         resize();
-        new ResizeObserver(resize).observe(mount);
+        new ResizeObserver(() => {
+          resize();
+          kick();
+        }).observe(mount);
 
         // Rest pose. With reduced motion this is where it stays, which is what
         // makes the homepage screenshot deterministic.
@@ -137,6 +140,7 @@
           vel = 0;
           el.style.cursor = 'grabbing';
           el.setPointerCapture?.(e.pointerId);
+          kick();
         });
 
         el.addEventListener('pointermove', (e) => {
@@ -147,6 +151,7 @@
           cur.y += dy;
           cur.x = Math.max(-0.7, Math.min(0.7, cur.x + (e.clientY - lastY) * 0.006));
           vel = Math.max(-9, Math.min(9, dy / dt));
+          kick();
           lastX = e.clientX;
           lastY = e.clientY;
           lastT = now;
@@ -164,6 +169,18 @@
         el.addEventListener('pointercancel', release);
         el.addEventListener('lostpointercapture', release);
 
+        // The loop used to run at 60fps forever -- off-screen, in a
+        // background tab, and with reduced motion where the pose never
+        // changes. That is a constant GPU cost, and it competed with the nav
+        // drawer's slide, which is what made the tap feel like it stuttered.
+        // Now frames are only requested when something is actually moving.
+        let onScreen = true;
+        let navOpen = false;
+        let rafId = 0;
+
+        const wants = () =>
+          onScreen && !document.hidden && !navOpen && (motion || dragging);
+
         let prev = performance.now();
         const draw = (t: number) => {
           const dt = Math.min(0.05, (t - prev) / 1000);
@@ -176,9 +193,29 @@
           group.rotation.y = cur.y;
           group.rotation.x = cur.x;
           renderer.render(scene, camera);
-          requestAnimationFrame(draw);
+          rafId = wants() ? requestAnimationFrame(draw) : 0;
         };
-        requestAnimationFrame(draw);
+
+        // Always paints at least one frame, so a reduced-motion or paused
+        // hero still shows the mark rather than an empty box.
+        const kick = () => {
+          if (rafId) return;
+          prev = performance.now();
+          rafId = requestAnimationFrame(draw);
+        };
+
+        new IntersectionObserver(([e]) => {
+          onScreen = e.isIntersecting;
+          kick();
+        }).observe(mount);
+
+        document.addEventListener('visibilitychange', kick);
+        document.addEventListener('nibf:nav', (e) => {
+          navOpen = !!(e as CustomEvent).detail?.open;
+          kick();
+        });
+
+        kick();
       })
       .catch((err) => {
         console.warn('three.js kon niet laden', err);

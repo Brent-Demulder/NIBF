@@ -90,6 +90,13 @@
 
 * { box-sizing: border-box; }
 
+/* Reserve the scrollbar track permanently. Locking body scroll to open the
+   drawer otherwise removes the scrollbar and the whole page jumps sideways by
+   its width at the moment of the tap. It also settles an existing
+   inconsistency: short pages had no scrollbar and long ones did, so the
+   content column shifted between pages. */
+html { scrollbar-gutter: stable; }
+
 body {
   margin: 0;
   background: var(--white);
@@ -100,6 +107,28 @@ body {
 
 a { color: var(--blue); text-decoration: none; }
 a:hover { color: var(--gold-text); }
+
+/* Links inside running prose get a real underline -- set below the baseline
+   and lighter than the text, the way a printed page would do it. Navigation,
+   buttons and list rows stay undecorated; there the surrounding structure
+   already says they are links. */
+.prose a,
+.intro a,
+.callout a,
+.page-intro a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .18em;
+  text-decoration-color: rgba(28, 47, 143, .35);
+  transition: text-decoration-color .2s var(--ease), color .2s var(--ease);
+}
+
+.prose a:hover,
+.intro a:hover,
+.callout a:hover,
+.page-intro a:hover { text-decoration-color: currentColor; }
+
+::selection { background: var(--blue); color: #fff; }
 
 a:focus-visible,
 button:focus-visible,
@@ -171,7 +200,10 @@ select:focus-visible {
 
 /* ---------------------------------------------------------- typography --- */
 
+/* balance keeps display lines even instead of leaving one orphaned word;
+   pretty does the same job for body copy without equalising every line. */
 .h1 {
+  text-wrap: balance;
   font-family: var(--font-display);
   font-weight: 500;
   font-size: clamp(56px, 7vw, 100px);
@@ -182,6 +214,7 @@ select:focus-visible {
 }
 
 .lede {
+  text-wrap: balance;
   font-family: var(--font-display);
   font-style: italic;
   font-size: 26px;
@@ -192,6 +225,7 @@ select:focus-visible {
 }
 
 .intro {
+  text-wrap: pretty;
   font-size: 17px;
   line-height: 1.8;
   color: var(--muted);
@@ -200,6 +234,7 @@ select:focus-visible {
 }
 
 .h2 {
+  text-wrap: balance;
   font-family: var(--font-display);
   font-weight: 500;
   font-size: 30px;
@@ -208,7 +243,8 @@ select:focus-visible {
 }
 
 
-.body { font-size: 16px; line-height: 1.75; color: var(--muted); margin: 0; }
+.body {
+  text-wrap: pretty; font-size: 16px; line-height: 1.75; color: var(--muted); margin: 0; }
 
 
 .link { font-size: 16px; }
@@ -528,7 +564,8 @@ select:focus-visible {
   margin: 0 0 22px;
 }
 
-.page-intro { font-size: 17px; line-height: 1.85; color: var(--muted); }
+.page-intro {
+  text-wrap: pretty; font-size: 17px; line-height: 1.85; color: var(--muted); }
 
 .two-col--start { gap: 64px; align-items: start; }
 
@@ -545,7 +582,8 @@ select:focus-visible {
   margin: 0 0 26px;
 }
 
-.prose { font-size: 17px; line-height: 1.85; color: var(--muted); margin: 0 0 20px; }
+.prose {
+  text-wrap: pretty; font-size: 17px; line-height: 1.85; color: var(--muted); margin: 0 0 20px; }
 .prose:last-child { margin-bottom: 0; }
 
 /* --------------------------------------------------------- bibliotheek --- */
@@ -606,6 +644,7 @@ select:focus-visible {
 }
 
 .terms__h {
+  text-wrap: balance;
   font-family: var(--font-display);
   font-weight: 500;
   font-size: 26px;
@@ -651,10 +690,15 @@ select:focus-visible {
    reads as intentional beats invented content that reads as fact. */
 .empty {
   border-top: 1px solid var(--rule-strong);
-  padding: 32px 4px 0;
-  font-size: 16px;
-  color: var(--soft);
+  padding: 36px 0 0;
   margin: 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.45;
+  color: var(--soft);
+  /* No max-width: the rule is the element's own border, so constraining the
+     box would leave a hairline that stops halfway and reads as broken. The
+     sentence is short enough to set its own measure. */
 }
 
 /* -------------------------------------------------------------- contact -- */
@@ -743,6 +787,7 @@ select:focus-visible {
     overflow-y: auto;
     overscroll-behavior: contain;
     z-index: 2;
+    will-change: transform;
     transform: translateX(100%);
     visibility: hidden;
     transition: transform .34s var(--ease), visibility 0s linear .34s;
