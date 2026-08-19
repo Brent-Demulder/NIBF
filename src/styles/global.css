@@ -63,7 +63,24 @@
 
   /* metrics */
   --nav-w: 18%;
-  --pad-x: 7vw;
+  /* 18% of a 2560px screen is a 461px rail, which is absurd for six links. */
+  --nav-max: 280px;
+
+  /* The readable column never exceeds this, however wide the screen. */
+  --content-max: 1200px;
+
+  /* Horizontal gutter. Three terms, largest wins:
+       20px            floor on the narrowest phones
+       7%              proportional -- and crucially a percentage of the
+                       CONTENT COLUMN, not the viewport. The old 7vw was
+                       measured against the whole window while the rail ate a
+                       further 210px, so the copy got squeezed twice and a
+                       1025px screen showed LESS content than a 1024px one.
+       (100% - max)/2  on wide screens the gutter grows instead of the text,
+                       centring the column. Backgrounds still span full width
+                       because the section itself is not width-limited. */
+  --gutter: max(20px, 7%, calc((100% - var(--content-max)) / 2));
+
   --radius: 2px;
 
   --ease: cubic-bezier(.2, .7, .2, 1);
@@ -105,6 +122,16 @@ select:focus-visible {
 /* Column flex with a full-viewport minimum so .pagefoot can be pushed to the
    bottom. Several pages are short now that the invented content is gone, and
    without this the footer floats mid-screen with dead space beneath it. */
+/* Every full-width band shares one gutter, so the copy stays in a single
+   optical column down the page. */
+.section,
+.section--hero,
+.section--page,
+.section--88,
+.pagefoot {
+  padding-inline: var(--gutter);
+}
+
 [data-main] {
   flex: 1;
   min-width: 0;
@@ -113,8 +140,8 @@ select:focus-visible {
   min-height: 100vh;
 }
 
-.section { padding: 92px var(--pad-x); }
-.section--hero { padding: 80px var(--pad-x) 96px; }
+.section { padding-block: 92px; }
+.section--hero { padding-block: 80px 96px; }
 .section--rule { border-top: 1px solid var(--rule); }
 .section--panel { background: var(--panel); }
 
@@ -317,7 +344,7 @@ select:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 44px var(--pad-x) 56px;
+  padding-block: 44px 56px;
   border-top: 1px solid var(--rule);
 }
 
@@ -349,6 +376,7 @@ select:focus-visible {
 [data-nav-mount] {
   width: var(--nav-w);
   min-width: 210px;
+  max-width: var(--nav-max);
   flex: 0 0 auto;
   position: sticky;
   top: 0;
@@ -472,8 +500,8 @@ select:focus-visible {
    Per-page one-offs (max-width, margin-bottom) live in each page's own
    scoped <style> block rather than accumulating modifiers here. */
 
-.section--page { padding: 80px var(--pad-x) 92px; }
-.section--88 { padding: 88px var(--pad-x); }
+.section--page { padding-block: 80px 92px; }
+.section--88 { padding-block: 88px; }
 
 /* The five inner pages share one h1 scale, distinct from the homepage. */
 .h1--page {
@@ -631,13 +659,16 @@ select:focus-visible {
 /* The original had a single 1024px cliff that flipped everything at once, so
    a tablet got the phone layout and a 1025px laptop got a cramped content
    column. Phase 3 splits it in two:
-     <= 1024px  the nav rail becomes a top bar, because 210px of rail plus a
-                content column is genuinely tight below this
+     <= 1200px  the nav rail becomes a top bar. Below this the rail costs
+                more than it gives: at 1025px it dropped the card grid from
+                three columns to two, so widening the window made the page
+                worse. 1200px is the point where a rail plus three cards
+                still fits, so column counts no longer invert.
      <=  700px  multi-column content collapses to one column
    Between the two, a tablet keeps two-column layouts with a full-width
    content area, which is the state that was missing entirely. */
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   [data-shell] { flex-direction: column-reverse !important; }
 
   [data-nav-mount] {
@@ -646,6 +677,8 @@ select:focus-visible {
     left: 0;
     right: 0;
     width: auto !important;
+    /* --nav-max caps the sidebar; as a full-width top bar it must not apply. */
+    max-width: none !important;
     flex: none !important;
     height: auto !important;
     z-index: 60;
@@ -683,7 +716,7 @@ select:focus-visible {
 
 /* Tablet: the rail is already a top bar, so the content column is full width
    and two-column layouts still fit. The gallery drops from three to two. */
-@media (max-width: 1024px) and (min-width: 701px) {
+@media (max-width: 1200px) and (min-width: 701px) {
   [data-gallery-grid] { grid-template-columns: repeat(2, 1fr); }
   [data-hero-grid] { gap: 40px; }
 }
