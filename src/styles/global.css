@@ -393,6 +393,20 @@ select:focus-visible {
   background: var(--white);
 }
 
+/* Above the breakpoint this is a plain column with no styling of its own.
+   Auto margins on both children reproduce the rail's original three-way
+   space-between (brand at top, list centred in the gap, foot at the bottom)
+   now that list and foot sit one level deeper. */
+[data-drawer] {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Only ever visible as the mobile panel's backdrop. */
+[data-scrim] { display: none; }
+
 .brand { display: flex; align-items: center; gap: 12px; }
 
 .brand__word {
@@ -465,7 +479,10 @@ select:focus-visible {
 
 [data-nav-list] {
   list-style: none;
-  margin: 0;
+  /* margin-top:auto here and on [data-rail-foot] splits the rail's free space
+     between the two, reproducing the original three-way space-between now
+     that both sit inside [data-drawer]. */
+  margin: auto 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -490,7 +507,7 @@ select:focus-visible {
 
 .nav__num { font-family: var(--font-mono); font-size: 11px; color: var(--soft); }
 
-[data-rail-foot] { display: flex; flex-direction: column; gap: 12px; }
+[data-rail-foot] { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
 
 .rail-foot__mail { font-size: 14px; color: var(--soft); }
 
@@ -655,6 +672,11 @@ select:focus-visible {
   color: var(--blue);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  [data-drawer],
+  [data-scrim] { transition: none !important; }
+}
+
 /* --------------------------------------------------------- responsive ---- */
 /* The original had a single 1024px cliff that flipped everything at once, so
    a tablet got the phone layout and a 1025px laptop got a cramped content
@@ -669,6 +691,11 @@ select:focus-visible {
    content area, which is the state that was missing entirely. */
 
 @media (max-width: 1200px) {
+  /* Fallback only. The bar's real height is driven by the MENU button, not
+     the brand mark, and shifts with the font. NavRail measures it and
+     overwrites this on :root, so the panel always meets the bar exactly. */
+  :root { --bar-h: 66px; }
+
   [data-shell] { flex-direction: column-reverse !important; }
 
   [data-nav-mount] {
@@ -694,23 +721,62 @@ select:focus-visible {
     border-left: none !important;
     border-bottom: 1px solid var(--rule-mobile) !important;
     position: relative;
+    /* Above the panel and the scrim, so the MENU/SLUIT button stays visible
+       and tappable while the drawer is open. */
+    z-index: 3;
   }
 
-  [data-nav-list] { display: none !important; }
-
-  [data-nav-rail][data-nav-open] [data-nav-list] {
-    display: flex !important;
-    position: absolute;
-    top: 100%;
-    left: 0;
+  /* The panel. Off-canvas to the right, matching the side the rail occupies
+     above the breakpoint. visibility rather than display so the transform can
+     animate; it is delayed on close so the slide finishes first. */
+  [data-drawer] {
+    position: fixed;
+    /* Hangs below the bar rather than covering it. */
+    top: var(--bar-h);
     right: 0;
+    bottom: 0;
+    width: min(320px, 85vw);
     background: #fff;
-    padding: 18px 20px 24px;
-    border-bottom: 1px solid var(--rule-mobile);
+    border-left: 1px solid var(--rule-nav);
+    padding: 26px 26px 32px;
+    gap: 28px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    z-index: 2;
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform .34s var(--ease), visibility 0s linear .34s;
   }
+
+  [data-nav-mount][data-nav-open] [data-drawer] {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform .34s var(--ease), visibility 0s;
+  }
+
+  /* A partial panel leaves a strip of dimmed page at the edge, so it reads as
+     a layer over the site rather than a separate screen. Tapping it closes. */
+  [data-scrim] {
+    display: block;
+    position: fixed;
+    inset: var(--bar-h) 0 0;
+    z-index: 1;
+    background: rgba(28, 47, 143, .28);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .34s var(--ease);
+  }
+
+  [data-nav-mount][data-nav-open] [data-scrim] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  [data-nav-list] { margin-top: 0; }
+
+  [data-drawer]:focus { outline: none; }
 
   [data-burger] { display: inline-flex !important; }
-  [data-rail-foot] { display: none !important; }
   [data-main] { padding-top: 74px !important; }
 }
 

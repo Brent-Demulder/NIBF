@@ -42,6 +42,10 @@ async function audit(page, width) {
     for (const el of document.querySelectorAll('body *')) {
       const r = el.getBoundingClientRect();
       if (r.width === 0 || r.height === 0) continue;
+      // Off-canvas by design: the closed mobile drawer parks itself to the
+      // right of the viewport. visibility is inherited, so this covers its
+      // whole subtree. Hidden things cannot visually overflow.
+      if (getComputedStyle(el).visibility === 'hidden') continue;
       if (r.right > vw + 1 || r.left < -1) {
         const cls = (el.className || '').toString().split(' ')[0];
         out.escapes.push({

@@ -9,7 +9,19 @@ interface Props {
 const { current } = Astro.props;
 ---
 
+{/*
+  One DOM for both layouts rather than a desktop rail plus a duplicate mobile
+  menu: duplicating would put two <nav> landmarks and two copies of every link
+  in the accessibility tree, with only a media query deciding which is real.
+
+  Above 1200px [data-drawer] is a transparent column inside the rail. Below it,
+  the rail flattens to a top bar and the same drawer becomes a panel sliding in
+  from the right -- the side the rail lives on, so mobile keeps the desktop's
+  orientation instead of borrowing a generic left hamburger.
+*/}
 <div data-nav-mount>
+  <div data-scrim aria-hidden="true"></div>
+
   <nav data-nav-rail aria-label="Hoofdnavigatie">
     <a href="/" class="brand">
       <span aria-hidden="true" class="mark">
@@ -19,41 +31,108 @@ const { current } = Astro.props;
       <span class="brand__word">{site.name}</span>
     </a>
 
-    <button data-burger type="button" aria-label="Menu openen" aria-expanded="false">MENU</button>
+    <button data-burger type="button" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-drawer">
+      <span data-burger-label>MENU</span>
+    </button>
 
-    <ul data-nav-list>
-      {
-        pages.map((p) => (
-          <li>
-            <a
-              href={p.href}
-              class="nav__link"
-              data-nav-item={p.key}
-              aria-current={p.href === current ? 'page' : undefined}
-            >
-              <span class="nav__num">{p.n}</span>{p.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+    <div data-drawer id="nav-drawer" tabindex="-1">
+      <ul data-nav-list>
+        {
+          pages.map((p) => (
+            <li>
+              <a
+                href={p.href}
+                class="nav__link"
+                data-nav-item={p.key}
+                aria-current={p.href === current ? 'page' : undefined}
+              >
+                <span class="nav__num">{p.n}</span>{p.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
 
-    {/* Social links removed: both pointed at /contact, so they looked like
-        real profiles and were not. They come back when real handles exist. */}
-    <div data-rail-foot>
-      <a href={`mailto:${site.email}`} class="rail-foot__mail">{site.email}</a>
+      {/* Hidden below 1200px before the drawer existed, so her address simply
+          vanished on phones. The panel has room for it. */}
+      <div data-rail-foot>
+        <a href={`mailto:${site.email}`} class="rail-foot__mail">{site.email}</a>
+      </div>
     </div>
   </nav>
 </div>
 
 <script>
-  // Burger toggle for the <=1024px layout, where the rail becomes a top bar.
+  const rail = document.querySelector<HTMLElement>('[data-nav-rail]');
+  const mount = document.querySelector<HTMLElement>('[data-nav-mount]');
   const burger = document.querySelector<HTMLButtonElement>('[data-burger]');
-  burger?.addEventListener('click', () => {
-    const rail = burger.closest<HTMLElement>('[data-nav-rail]');
-    if (!rail) return;
-    const open = rail.hasAttribute('data-nav-open');
-    rail.toggleAttribute('data-nav-open', !open);
-    burger.setAttribute('aria-expanded', String(!open));
-  });
+  const label = document.querySelector<HTMLElement>('[data-burger-label]');
+  const drawer = document.querySelector<HTMLElement>('[data-drawer]');
+  const scrim = document.querySelector<HTMLElement>('[data-scrim]');
+  const main = document.querySelector<HTMLElement>('[data-main]');
+
+  if (mount && burger && drawer) {
+    // Only meaningful below the breakpoint; above it the drawer is just part
+    // of the rail and must never be inert or hidden.
+    const isMobile = () => window.matchMedia('(max-width: 1200px)').matches;
+
+    const setOpen = (open: boolean) => {
+      mount.toggleAttribute('data-nav-open', open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.setAttribute('aria-label', open ? 'Menu sluiten' : 'Menu openen');
+      if (label) label.textContent = open ? 'SLUIT' : 'MENU';
+
+      // Keeps the page behind from scrolling under the panel.
+      document.body.style.overflow = open ? 'hidden' : '';
+
+      // inert removes the background from tab order and the a11y tree, which
+      // is more reliable than hand-rolling a focus trap.
+      if (main) main.inert = open;
+      drawer.inert = isMobile() ? !open : false;
+
+      // Focus the panel itself rather than the first link: programmatic
+      // focus on a link paints a visible ring even for touch users, which
+      // reads as a rendering bug. Tab still walks into the links from here.
+      if (open) drawer.focus();
+      else if (document.activeElement === document.body) burger.focus();
+    };
+
+    const isOpen = () => mount.hasAttribute('data-nav-open');
+
+    burger.addEventListener('click', () => setOpen(!isOpen()));
+    scrim?.addEventListener('click', () => setOpen(false));
+
+    // Navigating away should not leave the panel open behind the new page.
+    for (const link of drawer.querySelectorAll('a')) {
+      link.addEventListener('click', () => setOpen(false));
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen()) {
+        setOpen(false);
+        burger.focus();
+      }
+    });
+
+    // Crossing the breakpoint with the panel open would otherwise leave the
+    // body scroll-locked and the rail inert on desktop.
+    const mq = window.matchMedia('(max-width: 1200px)');
+    mq.addEventListener('change', () => setOpen(false));
+
+    setOpen(false);
+  }
+
+  // The panel hangs from the bottom of the top bar, so it needs the bar's real
+  // height. That is set by the MENU button rather than the brand mark and
+  // moves when the webfont swaps in, so measure instead of hardcoding.
+  if (rail) {
+    const syncBarHeight = () =>
+      document.documentElement.style.setProperty(
+        '--bar-h',
+        `${Math.round(rail.getBoundingClientRect().height)}px`
+      );
+    syncBarHeight();
+    new ResizeObserver(syncBarHeight).observe(rail);
+    document.fonts?.ready.then(syncBarHeight);
+  }
 </script>
