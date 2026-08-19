@@ -8,28 +8,24 @@ import WorkCard from '../components/WorkCard.astro';
 <BaseLayout
   title="NIBF — Nisrine Bolakhrif"
   path="/"
-  description="Beeldend werk en geschreven werk van Nisrine Bolakhrif. Bibliotheek, galerij en heldere afspraken over gebruik en auteursrecht."
+  description="Beeldend werk en geschreven werk van Nisrine Bolakhrif."
 >
   <section class="section--hero">
-    <Eyebrow text="NIBF — Kunst & literatuur — sinds 2019" />
+    <Eyebrow text="NIBF — Kunst & literatuur" />
 
     <div data-hero-grid>
       <div>
         <h1 class="h1">Nisrine<br />Bolakhrif</h1>
-        <p class="lede">
-          Beeldend werk en geschreven werk, ontstaan uit dezelfde vraag: wat blijft er van een
-          verhaal over als je het opnieuw vertelt?
-        </p>
+        <p class="lede">Beeldend werk en geschreven werk, onder één naam.</p>
         <p class="intro">
-          NIBF is het huis van mijn werk. Hier vind je de bibliotheek met teksten, de galerij met
-          beeldend werk, en heldere afspraken over gebruik en auteursrecht. Alles onder één naam,
-          geregistreerd bij het BOIP.
+          Hier vind je de bibliotheek met teksten, de galerij met beeldend werk, en de afspraken
+          over gebruik en auteursrecht.
         </p>
         <div class="btn-row">
           <a href="/kunst-gallerij" class="btn btn--primary">
             Bekijk de galerij <span class="arrow">→</span>
           </a>
-          <a href="/auteursrechten" class="btn btn--ghost">Auteursrechten</a>
+          <a href="/contact" class="btn btn--ghost">Contact</a>
         </div>
       </div>
 
@@ -41,32 +37,14 @@ import WorkCard from '../components/WorkCard.astro';
     <Eyebrow text="Het werk" rule={false} />
     <div class="card-grid">
       <WorkCard href="/kunst-gallerij" num="04" title="Kunst gallerij">
-        Beeldend werk, gebundeld per project en thema. Doek, papier en installatie.
+        Beeldend werk, gebundeld per project en thema.
       </WorkCard>
       <WorkCard href="/bibliotheek" num="03" title="Bibliotheek">
-        Novellen, essays, poëzie en korte verhalen, chronologisch geordend.
+        Geschreven werk, chronologisch geordend.
       </WorkCard>
       <WorkCard href="/auteursrechten" num="02" title="Auteursrechten">
-        Wat is vastgelegd bij het BOIP, en wat wel en niet mag zonder toestemming.
+        Wat wel en niet mag zonder toestemming.
       </WorkCard>
-    </div>
-  </section>
-
-  <section class="section section--rule">
-    <div data-two-col>
-      <div>
-        <Eyebrow text="Uitgelicht" rule={false} />
-        <h2 class="h2 h2--feature">Herhaling I–VI</h2>
-        <p class="body body--feature">
-          Zes doeken over hetzelfde interieur, geschilderd met een week ertussen. Elk doek werkt
-          vanuit de herinnering van het vorige, niet vanuit het interieur zelf.
-        </p>
-        <a href="/kunst-gallerij" class="link">Naar de serie →</a>
-      </div>
-
-      <div data-parallax="0.04" data-tilt class="placeholder placeholder--4x3 tiltable">
-        <span class="placeholder__caption">serie — 6 doeken, 120×90 cm</span>
-      </div>
     </div>
   </section>
 </BaseLayout>

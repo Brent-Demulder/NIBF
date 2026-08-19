@@ -38,13 +38,10 @@ const { current } = Astro.props;
       }
     </ul>
 
+    {/* Social links removed: both pointed at /contact, so they looked like
+        real profiles and were not. They come back when real handles exist. */}
     <div data-rail-foot>
-      <div class="rail-foot__social">
-        <a href="/contact">Instagram</a>
-        <a href="/contact">LinkedIn</a>
-      </div>
       <a href={`mailto:${site.email}`} class="rail-foot__mail">{site.email}</a>
-      <span class="rail-foot__boip">BOIP-GEREGISTREERD MERK</span>
     </div>
   </nav>
 </div>

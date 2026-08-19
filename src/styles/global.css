@@ -171,20 +171,9 @@ select:focus-visible {
   margin: 14px 0 12px;
 }
 
-.h2--feature {
-  font-size: clamp(34px, 3.6vw, 48px);
-  line-height: 1.1;
-  margin: 22px 0 18px;
-}
 
 .body { font-size: 16px; line-height: 1.75; color: var(--muted); margin: 0; }
 
-.body--feature {
-  font-size: 17px;
-  line-height: 1.85;
-  max-width: 46ch;
-  margin: 0 0 26px;
-}
 
 .link { font-size: 16px; }
 
@@ -299,8 +288,6 @@ select:focus-visible {
 .placeholder--16x10 { aspect-ratio: 16 / 10; }
 .placeholder--16x9 { aspect-ratio: 16 / 9; }
 
-/* Applied wherever the element also carries data-tilt. */
-.tiltable { transition: transform .5s var(--ease), box-shadow .5s; }
 
 .placeholder__caption {
   position: absolute;
@@ -467,15 +454,8 @@ select:focus-visible {
 
 [data-rail-foot] { display: flex; flex-direction: column; gap: 12px; }
 
-.rail-foot__social { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 14px; }
 .rail-foot__mail { font-size: 14px; color: var(--soft); }
 
-.rail-foot__boip {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: .12em;
-  color: var(--soft);
-}
 
 /* ======================================================== inner pages ==== */
 /* Shared by over-mij, auteursrechten, bibliotheek, kunst-gallerij, contact.
@@ -499,6 +479,8 @@ select:focus-visible {
 
 /* ------------------------------------------------------------ over-mij --- */
 
+.stack { display: grid; gap: 18px; }
+
 /* Unlike the homepage lede, this one is not measure-limited — it sits in a
    two-column grid that already constrains it. */
 .lede--sm {
@@ -510,33 +492,6 @@ select:focus-visible {
 
 .prose { font-size: 17px; line-height: 1.85; color: var(--muted); margin: 0 0 20px; }
 .prose:last-child { margin-bottom: 0; }
-
-.stack { display: grid; gap: 18px; }
-.stat-row { display: flex; gap: 18px; }
-.stat { flex: 1; padding: 20px; border: 1px solid var(--rule-strong); }
-
-.stat__num {
-  font-family: var(--font-display);
-  font-size: 38px;
-  color: var(--blue);
-  line-height: 1;
-}
-
-.stat__label { font-size: 13px; color: var(--soft); margin-top: 6px; }
-
-/* timeline */
-.tl { margin-top: 32px; border-top: 1px solid var(--rule-strong); }
-
-.tl__row {
-  display: grid;
-  grid-template-columns: 90px 1fr;
-  gap: 24px;
-  padding: 24px 4px;
-  border-bottom: 1px solid var(--rule-strong);
-}
-
-.tl__year { font-family: var(--font-mono); font-size: 12px; color: var(--soft); }
-.tl__text { font-size: 17px; line-height: 1.7; color: var(--muted); }
 
 /* --------------------------------------------------------- bibliotheek --- */
 
@@ -630,38 +585,22 @@ select:focus-visible {
 
 .chips { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 48px; }
 
-/* Real <button>s as of Phase 3 -- they were inert <span>s that looked
-   interactive, did nothing, and could not be reached by keyboard. The reset
-   properties below undo the browser's default button styling. */
-.chip {
-  padding: 9px 16px;
-  border: 1px solid rgba(28, 47, 143, .2);
-  color: var(--soft);
-  font-size: 13px;
-  border-radius: 999px;
-  font-family: inherit;
-  background: none;
-  cursor: pointer;
-  line-height: normal;
-}
-
-.chip:hover { border-color: var(--blue); color: var(--blue); }
-.chip--active { border-color: var(--blue); color: var(--blue); }
-
-/* .tile is display:block, which would otherwise beat the [hidden] default. */
-.tile[hidden] { display: none; }
-
 [data-gallery-grid] { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
 
 .tile { display: block; color: inherit; will-change: transform; }
 .tile:hover { color: inherit; }
 .tile--wide { grid-column: span 2; }
 
-.tile__meta { display: flex; justify-content: space-between; gap: 16px; margin-top: 16px; }
-.tile__title { font-family: var(--font-display); font-size: 27px; color: var(--blue); }
-.tile__year { font-family: var(--font-mono); font-size: 12px; color: var(--soft); }
-.tile__sub { margin-top: 16px; }
-.tile__kind { font-family: var(--font-mono); font-size: 12px; color: var(--soft); margin-top: 4px; }
+/* --------------------------------------------------------- empty state --- */
+/* Shown where real work will go. Deliberately plain: an empty frame that
+   reads as intentional beats invented content that reads as fact. */
+.empty {
+  border-top: 1px solid var(--rule-strong);
+  padding: 32px 4px 0;
+  font-size: 16px;
+  color: var(--soft);
+  margin: 0;
+}
 
 /* -------------------------------------------------------------- contact -- */
 

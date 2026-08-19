@@ -2,59 +2,21 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Eyebrow from '../components/Eyebrow.astro';
 
-// Shaped as data rather than markup because Phase 3 replaces this array with
-// a `teksten` content collection query. The template does not change then.
-const teksten = [
-  { jaar: '2025', titel: 'De tweede lezing', soort: 'Novelle' },
-  { jaar: '2024', titel: 'Wat de kamer onthield', soort: 'Essaybundel' },
-  { jaar: '2023', titel: 'Zeven brieven aan niemand', soort: 'Poëzie' },
-  { jaar: '2021', titel: 'Grondtoon', soort: 'Korte verhalen' },
-  { jaar: '2019', titel: 'Aanloop', soort: 'Korte verhalen' },
-];
+// The five listed publications were invented for the mockup and have been
+// removed. The .lib__* row design stays in global.css, ready for real entries.
 ---
 
 <BaseLayout
   title="Bibliotheek — NIBF"
   path="/bibliotheek"
-  description="Novellen, essays, poëzie en korte verhalen van Nisrine Bolakhrif, chronologisch geordend."
+  description="Geschreven werk van Nisrine Bolakhrif."
 >
   <section class="section--page">
     <Eyebrow text="03 — Bibliotheek" />
     <h1 class="h1 h1--page">Geschreven werk</h1>
-    <p class="page-intro">
-      Novellen, essays, poëzie en korte verhalen. Losse teksten verschijnen soms eerst in
-      tijdschriften en worden later gebundeld.
-    </p>
+    <p class="page-intro">Novellen, essays, poëzie en korte verhalen.</p>
 
-    <div class="lib">
-      {
-        teksten.map((t) => (
-          <a href="/bibliotheek" data-lib-row class="lib__row">
-            <span class="lib__year">{t.jaar}</span>
-            <span class="lib__title">{t.titel}</span>
-            <span class="lib__kind">{t.soort}</span>
-            <span class="lib__cta">Lezen →</span>
-          </a>
-        ))
-      }
-    </div>
-  </section>
-
-  <section class="section--88 section--rule section--panel">
-    <div data-two-col>
-      <div data-parallax="0.04" class="placeholder placeholder--3x4 placeholder--gold">
-        <span class="placeholder__caption">omslag — De tweede lezing</span>
-      </div>
-      <div>
-        <Eyebrow text="Meest recent" rule={false} />
-        <h2 class="h2 h2--recent">De tweede lezing</h2>
-        <p class="body body--recent">
-          Een novelle over een vrouw die haar eigen dagboek herleest en er iemand anders in
-          aantreft. Verschenen in 2025, 118 pagina's.
-        </p>
-        <a href="/contact" class="link">Leesexemplaar aanvragen →</a>
-      </div>
-    </div>
+    <p class="empty">Deze bibliotheek wordt binnenkort gevuld.</p>
   </section>
 </BaseLayout>
 
@@ -62,18 +24,5 @@ const teksten = [
   .page-intro {
     max-width: 56ch;
     margin: 0 0 48px;
-  }
-
-  .h2--recent {
-    font-size: clamp(32px, 3.4vw, 44px);
-    line-height: 1.1;
-    margin: 20px 0 18px;
-  }
-
-  .body--recent {
-    font-size: 17px;
-    line-height: 1.85;
-    max-width: 46ch;
-    margin: 0 0 24px;
   }
 </style>

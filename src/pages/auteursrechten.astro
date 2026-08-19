@@ -2,12 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Eyebrow from '../components/Eyebrow.astro';
 
+// The BOIP / merkregistratie card was removed: it claimed a registered
+// Benelux trademark with specific classes and a pending deposit number. That
+// is a legal claim, and it should only appear here once the registration
+// actually exists. What remains is true by default -- copyright arises
+// automatically on creation, and licensing is an offer rather than a claim.
 const feiten = [
-  {
-    label: 'Merkregistratie',
-    waarde: 'BOIP — Benelux',
-    note: 'Woord- en beeldmerk NIBF, klassen 16 en 41. Depotnummer volgt bij publicatie.',
-  },
   {
     label: 'Auteursrecht',
     waarde: 'Van rechtswege',
@@ -36,15 +36,14 @@ const niet = [
 <BaseLayout
   title="Auteursrechten — NIBF"
   path="/auteursrechten"
-  description="NIBF is een bij het BOIP geregistreerd merk. Wat is vastgelegd, en wat wel en niet mag zonder toestemming."
+  description="Wat wel en niet mag met het werk op deze site, en hoe je een licentie aanvraagt."
 >
   <section class="section--page">
-    <Eyebrow text="02 — Auteursrechten & merk" />
-    <h1 class="h1 h1--page">NIBF is een geregistreerd merk</h1>
+    <Eyebrow text="02 — Auteursrechten" />
+    <h1 class="h1 h1--page">Auteursrecht op dit werk</h1>
     <p class="page-intro">
-      Al het werk op deze site — teksten, beelden, titels, het woordmerk NIBF en de vormgeving
-      ervan — is intellectueel eigendom van Nisrine Bolakhrif. Hieronder staat wat is vastgelegd,
-      en wat wel en niet mag zonder toestemming.
+      Al het werk op deze site — teksten, beelden en de vormgeving ervan — is intellectueel
+      eigendom van Nisrine Bolakhrif. Hieronder staat wat wel en niet mag zonder toestemming.
     </p>
 
     <div class="factgrid">
@@ -75,8 +74,6 @@ const niet = [
     </div>
 
     <div class="callout">
-      {/* The {' '} is load-bearing: Astro strips the newline before an inline
-          element that starts a line, which would render "viacontact". */}
       <p>
         Vragen over gebruik of een licentieverzoek? Stuur een bericht via{' '}
         <a href="/contact">contact</a> met een korte beschrijving van het beoogde gebruik, de

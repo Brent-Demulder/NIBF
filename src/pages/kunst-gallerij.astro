@@ -2,141 +2,48 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Eyebrow from '../components/Eyebrow.astro';
 
-// Becomes a `kunstwerken` collection query in Phase 3.
-const werken = [
-  {
-    titel: 'Herhaling I–VI',
-    jaar: '2025 · doek',
-    caption: 'serie — 6 doeken, 120×90 cm',
-    ratio: 'placeholder--16x10',
-    stripe: '',
-    parallax: '0.04',
-    wide: true,
-    tags: ['Herinnering', 'Doek'],
-  },
-  {
-    titel: 'Kamerstudie',
-    jaar: '2024 · papier',
-    caption: 'werk op papier',
-    ratio: 'placeholder--3x4',
-    stripe: 'placeholder--gold',
-    parallax: '0.07',
-    wide: false,
-    tags: ['Papier'],
-  },
-  {
-    titel: 'Grondtoon',
-    jaar: '2023 · installatie',
-    caption: 'installatie, detail',
-    ratio: 'placeholder--1x1',
-    stripe: 'placeholder--s09',
-    parallax: '0.05',
-    wide: false,
-    tags: ['Herinnering'],
-  },
-  {
-    titel: 'Wat de kamer onthield',
-    jaar: '2024 · expositie',
-    caption: 'tentoonstellingsoverzicht',
-    ratio: 'placeholder--16x9',
-    stripe: 'placeholder--s13',
-    parallax: '0.03',
-    wide: true,
-    tags: ['Herinnering', 'Doek'],
-  },
+// The four listed works were invented for the mockup and have been removed,
+// along with the Herinnering/Papier/Doek filters that categorised them. The
+// filter implementation is in git history at 6e41e90 and comes back once real
+// work exists to tag. What remains are empty frames showing the grid.
+const frames = [
+  { ratio: 'placeholder--16x10', stripe: '', wide: true },
+  { ratio: 'placeholder--3x4', stripe: 'placeholder--gold', wide: false },
+  { ratio: 'placeholder--1x1', stripe: 'placeholder--s09', wide: false },
 ];
-
-// Placeholder tagging: the original markup carried no work-to-filter mapping,
-// so these are plausible assignments that get replaced by real CMS values.
-const filters = ['Alles', 'Herinnering', 'Papier', 'Doek'];
 ---
 
 <BaseLayout
   title="Kunst gallerij — NIBF"
   path="/kunst-gallerij"
-  description="Beeldend werk van Nisrine Bolakhrif, gebundeld per project en thema. Doek, papier en installatie."
+  description="Beeldend werk van Nisrine Bolakhrif."
 >
   <section class="section--page">
     <Eyebrow text="04 — Kunst gallerij" />
-    <h1 class="h1 h1--page">Werk per project en thema</h1>
-
-    <div class="chips">
-      {
-        filters.map((f, i) => (
-          <button
-            type="button"
-            class:list={['chip', i === 0 && 'chip--active']}
-            data-filter={f}
-            aria-pressed={i === 0 ? 'true' : 'false'}
-          >
-            {f}
-          </button>
-        ))
-      }
-    </div>
+    <h1 class="h1 h1--page">Beeldend werk</h1>
+    <p class="page-intro">Werk op doek, papier en in installatie.</p>
 
     <div data-gallery-grid>
       {
-        werken.map((w) => (
-          <a
-            href="/kunst-gallerij"
-            data-tilt
-            class:list={['tile', 'tiltable', w.wide && 'tile--wide']}
-            data-tags={w.tags.join('|')}
-          >
-            <div
-              data-parallax={w.parallax}
-              class:list={['placeholder', w.ratio, w.stripe]}
-            >
-              <span class="placeholder__caption">{w.caption}</span>
-            </div>
-            {
-              w.wide ? (
-                <div class="tile__meta">
-                  <span class="tile__title">{w.titel}</span>
-                  <span class="tile__year">{w.jaar}</span>
-                </div>
-              ) : (
-                <div class="tile__sub">
-                  <div class="tile__title">{w.titel}</div>
-                  <div class="tile__kind">{w.jaar}</div>
-                </div>
-              )
-            }
-          </a>
+        frames.map((f) => (
+          <div class:list={['tile', f.wide && 'tile--wide']}>
+            <div class:list={['placeholder', f.ratio, f.stripe]} />
+          </div>
         ))
       }
     </div>
+
+    <p class="empty">Deze galerij wordt binnenkort gevuld.</p>
   </section>
 </BaseLayout>
 
 <style>
-  h1 {
-    max-width: 22ch;
+  .page-intro {
+    max-width: 56ch;
+    margin: 0 0 40px;
+  }
+
+  .empty {
+    margin-top: 40px;
   }
 </style>
-
-<script>
-  // The chips were inert <span>s in the original -- they looked interactive
-  // but had no handler and were not keyboard reachable. Now real buttons.
-  const chips = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
-  const tiles = document.querySelectorAll<HTMLElement>('[data-tags]');
-
-  for (const chip of chips) {
-    chip.addEventListener('click', () => {
-      const want = chip.dataset.filter;
-
-      for (const other of chips) {
-        const on = other === chip;
-        other.classList.toggle('chip--active', on);
-        other.setAttribute('aria-pressed', String(on));
-      }
-
-      for (const tile of tiles) {
-        const tags = (tile.dataset.tags ?? '').split('|');
-        const show = want === 'Alles' || tags.includes(want ?? '');
-        tile.hidden = !show;
-      }
-    });
-  }
-</script>

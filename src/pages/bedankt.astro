@@ -16,12 +16,11 @@ import Eyebrow from '../components/Eyebrow.astro';
   <section class="section--page">
     <Eyebrow text="Bericht verzonden" />
     <h1 class="h1 h1--page">Bedankt voor je bericht</h1>
-    <p class="page-intro">
-      Je bericht is goed aangekomen. Ik antwoord doorgaans binnen vijf werkdagen.
-    </p>
+    {/* No response-time promise here: it was removed from the contact page as
+        a commitment she has not actually made, and the two should match. */}
+    <p class="page-intro">Je bericht is goed aangekomen. Ik neem zo snel mogelijk contact op.</p>
     <div class="btn-row">
       <a href="/" class="btn btn--primary">Terug naar home <span class="arrow">→</span></a>
-      <a href="/kunst-gallerij" class="btn btn--ghost">Bekijk de galerij</a>
     </div>
   </section>
 </BaseLayout>

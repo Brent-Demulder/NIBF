@@ -15,7 +15,7 @@ const onderwerpen = [
 <BaseLayout
   title="Contact — NIBF"
   path="/contact"
-  description="Neem contact op met Nisrine Bolakhrif voor licenties, tentoonstellingen, publicaties, lezingen of workshops."
+  description="Neem contact op met Nisrine Bolakhrif."
 >
   <section class="section--page">
     <Eyebrow text="05 — Contact" />
@@ -24,24 +24,15 @@ const onderwerpen = [
     <div data-two-col class="two-col--start">
       <div>
         <p class="page-intro">
-          Voor licenties, tentoonstellingen, publicaties, lezingen of workshops. Ik antwoord
-          doorgaans binnen vijf werkdagen.
+          Voor licenties, tentoonstellingen, publicaties, lezingen of workshops.
         </p>
+        {/* The atelier line said Amsterdam, which is wrong, and the Instagram
+            and LinkedIn links both pointed at this page. Both removed until
+            there is something real to put there. */}
         <div class="field-list">
           <div>
             <span class="field-label">E-mail</span>
             <a href={`mailto:${site.email}`}>{site.email}</a>
-          </div>
-          <div>
-            <span class="field-label">Atelier</span>
-            <span class="field-value">Amsterdam, op afspraak</span>
-          </div>
-          <div>
-            <span class="field-label">Sociaal</span>
-            <span class="socials">
-              <a href="/contact">Instagram</a>
-              <a href="/contact">LinkedIn</a>
-            </span>
           </div>
         </div>
       </div>
