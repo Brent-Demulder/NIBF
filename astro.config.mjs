@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 // NOTE: deliberately no adapter.
 // The Netlify adapter routes <Image /> through Netlify Image CDN on demand,
@@ -13,6 +14,13 @@ export default defineConfig({
   // is bought later; .be would suit a Belgian client better than .nl.
   site: 'https://nibf.netlify.app',
   output: 'static',
+
+  integrations: [
+    // /bedankt is where the contact form POSTs; it is not a content page and
+    // should not be advertised to crawlers.
+    sitemap({ filter: (page) => !page.includes('/bedankt') }),
+  ],
+
   build: {
     format: 'directory',
   },

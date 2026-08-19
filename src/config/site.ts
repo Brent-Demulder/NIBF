@@ -43,6 +43,20 @@ export const site = {
   name: 'NIBF',
   author: 'Nisrine Bolakhrif',
   email: 'neb_off@hotmail.com',
+
+  /**
+   * Whether search engines may index the site.
+   *
+   * False while this is a placeholder on a netlify.app subdomain: the gallery
+   * and bibliotheek are empty, and letting an empty portfolio get indexed --
+   * then moving it to a custom domain later -- splits whatever authority it
+   * earns and leaves stale results pointing at the subdomain.
+   *
+   * Flip to true when there is real work on the site and the final domain is
+   * settled. That single change updates robots.txt and drops the noindex tag
+   * from every page.
+   */
+  indexable: false,
   /** Belgian client, Flanders — nl-BE rather than plain nl. */
   lang: 'nl-BE',
   /** Registered with BOIP, which covers Belgium as well as the Netherlands. */

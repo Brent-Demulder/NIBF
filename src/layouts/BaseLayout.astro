@@ -36,6 +36,10 @@ const canonical = new URL(path, Astro.site).href;
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
+    {/* robots.txt only asks crawlers not to fetch; this is what actually keeps
+        the page out of results while the site is a placeholder. */}
+    {!site.indexable && <meta name="robots" content="noindex, nofollow" />}
+
     {/* Sharing any page previously produced a blank card -- only <title>
         existed. No og:image yet: it wants a 1200x630 raster, and the right
         one is a piece of her actual work, which does not exist on the site
