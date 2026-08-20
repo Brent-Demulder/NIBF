@@ -40,7 +40,7 @@ export function nextPage(href: string): NavPage {
 }
 
 export const site = {
-  name: 'NIBF',
+  name: 'NBKRF',
   author: 'Nisrine Bolakhrif',
   email: 'neb_off@hotmail.com',
 
@@ -60,5 +60,5 @@ export const site = {
   /** Belgian client, Flanders — nl-BE rather than plain nl. */
   lang: 'nl-BE',
   /** Registered with BOIP, which covers Belgium as well as the Netherlands. */
-  copyright: '© 2026 Nisrine Bolakhrif — NIBF. Alle rechten voorbehouden.',
+  copyright: '© 2026 Nisrine Bolakhrif — NBKRF. Alle rechten voorbehouden.',
 } as const;

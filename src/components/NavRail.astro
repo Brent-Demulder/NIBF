@@ -98,7 +98,7 @@ const { current } = Astro.props;
 
       // The hero listens for this and stops rendering while the panel is
       // open, so the slide gets the frame budget to itself.
-      document.dispatchEvent(new CustomEvent('nibf:nav', { detail: { open } }));
+      document.dispatchEvent(new CustomEvent('nbkrf:nav', { detail: { open } }));
     };
 
     const isOpen = () => mount.hasAttribute('data-nav-open');

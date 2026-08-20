@@ -12,7 +12,7 @@ export default defineConfig({
   // Used for canonical URLs, sitemap and OG tags, so it must be the address
   // the site is actually served from. Change here (one place) if a domain
   // is bought later; .be would suit a Belgian client better than .nl.
-  site: 'https://nibf.netlify.app',
+  site: 'https://nbkrf.netlify.app',
   output: 'static',
 
   integrations: [sitemap()],

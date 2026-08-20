@@ -1,4 +1,4 @@
-# NIBF — migration plan: static HTML → Astro
+# NBKRF — migration plan: static HTML → Astro
 
 Written 2026-08-18, re-scoped the same day. Stack settled: **Astro (static output, no adapter) + Decap CMS + self-hosted GitHub OAuth proxy (Path B) + images in-repo, optimized at build time.**
 

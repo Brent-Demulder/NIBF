@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="NIBF">
-  <!-- The NIBF roundel: a ring whose top half is filled, with a smaller
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="NBKRF">
+  <!-- The NBKRF roundel: a ring whose top half is filled, with a smaller
        centre circle whose bottom half is filled. Same construction as the
        .mark component in global.css and the 3D hero. -->
   <circle cx="16" cy="16" r="15" fill="#fff" stroke="#1c2839" stroke-width="1.5" />

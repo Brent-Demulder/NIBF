@@ -1,5 +1,5 @@
 ---
-// The NIBF roundel rendered in 3D and draggable.
+// The NBKRF roundel rendered in 3D and draggable.
 // three.js is ~600KB, so it is imported dynamically: Vite code-splits it into
 // its own chunk that only the homepage ever requests. It must never end up in
 // the shared bundle.
@@ -219,7 +219,7 @@
         }).observe(mount);
 
         document.addEventListener('visibilitychange', kick);
-        document.addEventListener('nibf:nav', (e) => {
+        document.addEventListener('nbkrf:nav', (e) => {
           navOpen = !!(e as CustomEvent).detail?.open;
           kick();
         });
